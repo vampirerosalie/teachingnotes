@@ -12,8 +12,9 @@ click('[data-level="Form 4"]');click('[data-subject="BI"]');assert.equal(documen
 click('#home');click('[data-level="Form 1"]');click('[data-subject="Science"]');click('[data-month="11"]');assert.equal(document.querySelectorAll('[data-material]').length,1);assert.ok(q('[data-material="f1-sc"]'));assert.equal(document.querySelectorAll('a[download]').length,0);
 click('#home');click('[data-level="Form 1"]');click('[data-subject="BI"]');click('[data-month="11"]');assert.ok(q('[data-material="f1-bi"]'));assert.equal(q('a[download]').getAttribute('download'),'11 BI F1.pdf');
 click('#home');click('[data-level="Form 5"]');click('[data-subject="BI"]');click('[data-month="11"]');assert.equal(document.querySelectorAll('[data-material]').length,0);
+click('#home');click('[data-level="Form 3"]');click('[data-subject="Science"]');click('[data-month="1"]');assert.equal(q('#sectionTitle').textContent,'January lessons');assert.equal(document.querySelectorAll('[data-material]').length,1);assert.ok(q('[data-material="f3-sc-jan-teacher"]'));assert.equal(q('a[download]').getAttribute('download'),'F3 C1 SC_教师完整版.pdf');assert.equal(q('a[download]').getAttribute('href'),'assets/materials/f3-science-chapter1-teacher.pdf');
 click('#home');click('[data-level="Year 4"]');assert.match(q('#choices').textContent,/haven’t been added/);
 click('#lock');assert.equal(q('#login').hidden,false);assert.equal(q('#library').hidden,true);
-assert.equal(materials.length,5);assert.equal(new Set(materials.map(m=>m.file)).size,5);assert.ok(materials.every(m=>m.month===11));
+assert.equal(materials.length,6);assert.equal(new Set(materials.map(m=>m.file)).size,6);assert.equal(materials.filter(m=>m.month===11).length,5);assert.equal(materials.filter(m=>m.month===1).length,1);
 for(const m of materials)assert.ok(readFileSync(new URL('../dist/assets/materials/'+m.file,import.meta.url)).length>0);
 console.log('PASS: password gate, all levels/months, subject navigation, exact filing, duplicate removal, empty states, lock.');dom.window.close();

@@ -4,12 +4,13 @@ A static GitHub Pages teaching library for iPad Safari. Browse level → subject
 
 ## Current materials
 
-All materials are under **November**. F4–5 materials are deliberately filed under **Form 4** only.
+The original five materials are under **November**. The Form 3 Science teacher’s complete Chapter 1 PDF from Drive → 1214 → 科学 is under **January**. F4–5 materials are deliberately filed under **Form 4** only.
 
 | Level | Subject | Material |
 | --- | --- | --- |
 | Form 1 | BI | 11 BI F1.pdf |
 | Form 1 | Science | 11 SC F1.html |
+| Form 3 | Science | F3 C1 SC_教师完整版.pdf (January) |
 | Form 4 | BI | F45 NEXT YEAR.pdf |
 | Form 4 | BI | SS4 English Form 4–5 November Set 02 PDF |
 | Form 4 | BI | SS4 English Form 4–5 November Set 02 Reading HTML |
@@ -45,4 +46,4 @@ Copy original materials into `dist/assets/materials/`, then edit `dist/materials
 
 ## Verification limits
 
-Automated checks cover source integrity, material routing, password masking, annotation behavior, continuous page layout, pinch anchors, gesture direction, canvas eviction with note retention, cancellation, restored original controls against both HTML decks, PDF download links, selection suppression, stroke-lifecycle regressions, resting-hand contacts, and all 89 PDF pages. The simulated DOM/gesture checks do not replace real iPad Safari and Apple Pencil testing. Browser preview was unavailable in the build environment.
+Automated checks cover source integrity, material routing, password masking, annotation behavior, continuous page layout, pinch anchors, gesture direction, canvas eviction with note retention, cancellation, restored original controls against both HTML decks, PDF download links, selection suppression, stroke-lifecycle regressions, resting-hand contacts, and the bundled PDFs. The simulated DOM/gesture checks do not replace real iPad Safari and Apple Pencil testing. Browser preview was unavailable in the build environment.
