@@ -1,0 +1,15 @@
+import {JSDOM} from 'jsdom';
+import assert from 'node:assert/strict';
+import {InkLayer} from '../dist/ink.js';
+const dom=new JSDOM('<div id="page"></div>');
+const target=dom.window.document.querySelector('#page');const settings={tool:'pen',color:'#ff0000',size:4,finger:false};
+const layer=new InkLayer(target,()=>settings);layer.svg.setPointerCapture=()=>{};layer.svg.getBoundingClientRect=()=>({left:0,top:0,width:1000,height:1000});
+const event=(x,y,type='pen')=>({pointerId:1,pointerType:type,clientX:x,clientY:y,pressure:.5,preventDefault(){},stopPropagation(){}});
+layer.start(event(10,10));layer.move(event(100,100));layer.end(event(100,100));assert.equal(layer.strokes.length,1);assert.equal(layer.svg.querySelectorAll('path').length,1);
+layer.start(event(200,200,'touch'));layer.end(event(200,200,'touch'));assert.equal(layer.strokes.length,1,'Finger input must be ignored by default');
+settings.finger=true;settings.tool='highlight';layer.start(event(300,300,'touch'));layer.move(event(400,400,'touch'));layer.end(event(400,400,'touch'));assert.equal(layer.strokes.length,2);assert.equal(layer.strokes[1].opacity,.32);
+settings.tool='erase';layer.start(event(55,55));layer.end(event(55,55));assert.equal(layer.strokes.length,1,'Eraser must hit the segment between sample points');layer.undo();assert.equal(layer.strokes.length,2);
+layer.clear();assert.equal(layer.strokes.length,0);layer.undo();assert.equal(layer.strokes.length,2);
+settings.tool='interact';layer.update();assert.equal(layer.svg.style.pointerEvents,'none');layer.start(event(400,400));layer.end(event(400,400));assert.equal(layer.strokes.length,2);
+const second=new InkLayer(dom.window.document.createElement('div'),()=>settings);assert.equal(second.strokes.length,0,'New page starts clean');layer.destroy();assert.equal(target.querySelector('svg'),null);
+console.log('PASS: writing, highlighting, finger rejection/opt-in, segment erasing, undo, clear, interaction passthrough, page isolation and cleanup.');dom.window.close();
