@@ -19,10 +19,13 @@ The duplicate Reading HTML upload is included once. Original lesson files are co
 ## Using the viewer
 
 - Enter the password chosen by the owner. The client-side entry screen is a convenience gate, not authentication; the repository and hosted assets are public.
-- **Interact** enables the original lesson buttons, scrolling, and deck zoom controls.
-- **Pen / Highlight** enable temporary annotations. Apple Pencil input works through Pointer Events. Touch drawing is optional; enable **Draw with finger** if needed. Use Interact to scroll.
+- The reader has one compact toolbar. **Tools** opens color, pen size, finger drawing, page jump, and other settings. Extra HTML controls are available through **Show lesson controls**. The large title and bottom hint bars are no longer permanently visible.
+- **Move** (Interact) enables lesson buttons and ordinary reading. HTML previous/next/answer controls are provided in the same compact toolbar.
+- **Pen / Mark** enable temporary annotations. In PDFs, one finger scrolls and two fingers pinch to zoom even while Pencil tools are selected. Touch drawing is optional; enable **Draw with finger** if needed, then use Move to scroll. A second finger cancels a partial finger stroke and starts a pinch.
 - Eraser removes whole strokes; Undo reverses drawing, erasing, and clearing. Clear page affects the current PDF page or HTML slide.
-- PDF navigation, zoom, and fit-to-width are provided by the site. HTML slides retain their original controls.
+- PDFs use continuous vertical pages with anchored two-finger zoom, momentum panning, and an optional page-number jump. **Fit width** is in Tools. Nearby pages render on demand with at most five cached canvases, while per-page ink remains in memory.
+- **Full screen / Exit full screen** toggles an in-page reading mode. Both HTML decks route their own fullscreen controls to the host. Native Safari fullscreen is deliberately not requested, so its swipe-to-exit gesture is not attached to the reader. Safari browser chrome and system gestures are outside the site’s control.
+- Password entry keeps native password semantics/autofill but paints only a separate bullet overlay. Actual input glyphs remain transparent, including Safari’s last-character reveal. There is no Show password button.
 - Notes are retained per page or slide while that material is open. Closing the viewer, reloading the page, or leaving the site discards them. No annotation cloud storage or browser persistent storage is used.
 - This implements standard web Pencil input, not Pencil Pro squeeze, barrel-roll, or native Apple Markup.
 
@@ -30,7 +33,7 @@ The duplicate Reading HTML upload is included once. Original lesson files are co
 
 Enable **Settings → Pages → Source → GitHub Actions**. The included workflow publishes `dist/` on pushes to `main`. Relative asset URLs support a project URL such as `/teachingnotes/`.
 
-PDF.js 4.10.38 and its worker, character maps, and fonts are vendored locally; no CDN is needed. Use a current Safari/iPadOS version. The viewer renders one PDF page at a time, limits canvas pixels, and releases PDF data on close.
+PDF.js 4.10.38 and its worker, character maps, and fonts are vendored locally; no CDN is needed. Use a current Safari/iPadOS version. The viewer limits each raster canvas to three million pixels and releases PDF data on close.
 
 ## Updating lessons
 
@@ -40,4 +43,4 @@ Copy original materials into `dist/assets/materials/`, then edit `dist/materials
 
 ## Verification limits
 
-The initial build was checked for source integrity, material routing, password handling, annotation behavior, and PDF readability. Browser preview was unavailable in the build environment. Real iPad Safari and Apple Pencil testing is still required; it is not implied by automated checks.
+Automated checks cover source integrity, material routing, password masking, annotation behavior, continuous page layout, pinch anchors, gesture direction, canvas eviction with note retention, cancellation, compact HTML controls against both original decks, and all 89 PDF pages. The simulated DOM/gesture checks do not replace real iPad Safari and Apple Pencil testing. Browser preview was unavailable in the build environment.
