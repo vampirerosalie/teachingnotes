@@ -1,4 +1,4 @@
-import {TouchNavigator} from './gestures.js?v=2';
+import {TouchNavigator} from './gestures.js?v=3';
 const GUTTER = 16, GAP = 20, MAX_CANVASES = 5;
 export const limitZoom = z => Math.max(.5, Math.min(4, z));
 
@@ -17,6 +17,7 @@ export class PDFReader {
       zoomAt: (z, from, to) => this.zoomAt(z, from, to),
       canDraw: () => settings().finger && settings().tool !== 'interact',
       cancelInk: () => this.pages.forEach(p => p.layer?.cancel()),
+      isPenActive: () => this.pages.some(p => p.layer?.pointerType === 'pen' && p.layer.pointer !== null),
       settled: () => this.schedule(),
     });
     this.scrollHandler = () => this.schedule();

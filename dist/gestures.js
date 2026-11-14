@@ -1,9 +1,10 @@
 // PDF gestures are scoped to the reading surface, never the toolbar or login.
 export class TouchNavigator {
-  constructor(surface, {getZoom, zoomAt, canDraw, cancelInk, settled}) {
+  constructor(surface, {getZoom, zoomAt, canDraw, cancelInk, settled, isPenActive = () => false}) {
     this.surface = surface;
-    this.options = {getZoom, zoomAt, canDraw, cancelInk, settled};
+    this.options = {getZoom, zoomAt, canDraw, cancelInk, settled, isPenActive};
     this.points = new Map();
+    this.ignoredTouches = new Set();
     this.mode = null;
     this.velocity = [0, 0];
     this.frame = 0;
@@ -21,7 +22,17 @@ export class TouchNavigator {
   }
   capture(id) { try { this.surface.setPointerCapture(id); } catch {} }
   down(e) {
+    if (e.pointerType === 'pen') {
+      // Stop momentum and quarantine a resting hand before the ink layer starts its stroke.
+      cancelAnimationFrame(this.frame); this.frame=0;
+      for (const id of this.points.keys()) this.ignoredTouches.add(id);
+      this.points.clear(); this.mode=null; this.velocity=[0,0];
+      return;
+    }
     if (e.pointerType !== 'touch' || e.target?.closest?.('button,input,select,a')) return;
+    if (this.options.isPenActive()) {
+      this.ignoredTouches.add(e.pointerId);e.preventDefault();e.stopPropagation();return;
+    }
     cancelAnimationFrame(this.frame);
     this.points.set(e.pointerId, this.local(e));
     this.velocity = [0, 0];
@@ -37,6 +48,7 @@ export class TouchNavigator {
     if (this.mode !== 'ink') { e.preventDefault(); e.stopPropagation(); }
   }
   move(e) {
+    if(this.ignoredTouches.has(e.pointerId)){e.preventDefault();e.stopPropagation();return;}
     if (!this.points.has(e.pointerId)) return;
     const previous = this.points.get(e.pointerId), point = this.local(e);
     this.points.set(e.pointerId, point);
@@ -55,6 +67,7 @@ export class TouchNavigator {
     this.lastTime = e.timeStamp;
   }
   end(e) {
+    if(this.ignoredTouches.delete(e.pointerId)){e.preventDefault();e.stopPropagation();return;}
     if (!this.points.has(e.pointerId)) return;
     // Transferring capture from an ink layer to the scroll surface must not end a pinch.
     if (e.type === 'lostpointercapture' && (e.target !== this.surface || this.surface.hasPointerCapture?.(e.pointerId))) return;
@@ -85,6 +98,6 @@ export class TouchNavigator {
   destroy() {
     cancelAnimationFrame(this.frame);
     for (const [name, handler] of Object.entries(this.handlers)) this.surface.removeEventListener(name, handler, true);
-    this.points.clear();
+    this.points.clear(); this.ignoredTouches.clear();
   }
 }

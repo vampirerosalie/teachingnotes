@@ -1,15 +1,15 @@
 // Deliberately use an in-page mode: Safari's native fullscreen swipe-to-exit cannot be disabled.
 export function readingMode(viewer, button) {
   let expanded = false;
-  const deckButtons = new Set();
+  const deckButtons = new Map();
   function set(value) {
     expanded = value; viewer.classList.toggle('reading-full', value);
     button.textContent = value ? 'Exit full screen' : 'Full screen';
     button.setAttribute('aria-pressed', String(value));
     if(value){const options=viewer.querySelector('#viewerOptions');if(options)options.hidden=true;viewer.querySelector('#viewerMore')?.setAttribute('aria-expanded','false');}
-    for (const b of deckButtons) {
+    for (const [b, originalLabel] of deckButtons) {
       if (!b.isConnected) { deckButtons.delete(b); continue; }
-      b.textContent = value ? 'Exit full screen' : 'Full screen';
+      b.textContent = value ? 'Exit full screen' : originalLabel;
       b.setAttribute('aria-pressed', String(value));
     }
   }
@@ -18,7 +18,7 @@ export function readingMode(viewer, button) {
   function connectDeck(doc) {
     const buttons = doc.querySelectorAll('#full, button[onclick*="toggleFullScreen"], button[onclick*="requestFullscreen"]');
     for (const b of buttons) {
-      deckButtons.add(b);
+      deckButtons.set(b, b.textContent);
       b.addEventListener('click', e => { e.preventDefault(); e.stopImmediatePropagation(); toggle(); }, true);
     }
     doc.addEventListener('keydown', e => {

@@ -30,8 +30,7 @@ body.reading-open{overflow:hidden;overscroll-behavior:none}
 .quick-tools button[aria-pressed=true]{background:var(--wine);color:white}
 #viewerMore{margin-left:auto}
 #fullViewer{margin-left:0}
-#deckControls{display:flex;align-items:center;gap:3px;margin-left:4px}
-#deckPosition,#pdfBadge{font-size:11px;white-space:nowrap;color:var(--muted);padding:0 4px}
+#pdfBadge{font-size:11px;white-space:nowrap;color:var(--muted);padding:0 4px}
 #viewerOptions{background:white;flex-shrink:0;max-height:40dvh;overflow:auto;border-bottom:1px solid var(--line)}
 #viewerOptions .viewer-title{padding:12px 18px 5px}
 #viewerOptions .viewer-title strong{font-size:16px}
@@ -42,4 +41,12 @@ body.reading-open{overflow:hidden;overscroll-behavior:none}
 #viewer.reading-full .viewer-header{padding:3px 10px;min-height:52px}
 #viewer.reading-full #closeViewer{display:block}
 #viewer.reading-full .viewer-title{display:block}
-@media(max-width:700px){.viewer-header{gap:2px;padding:3px 5px}.viewer-header button{padding:7px;min-width:40px}.quick-tools span{display:none}#deckPosition{display:none}#deckReveal{font-size:11px}#fullViewer{font-size:11px}#viewer.reading-full .viewer-header{padding:3px 5px}}
+@media(max-width:700px){.viewer-header{gap:2px;padding:3px 5px}.viewer-header button{padding:7px;min-width:40px}.quick-tools span{display:none}#fullViewer{font-size:11px}#viewer.reading-full .viewer-header{padding:3px 5px}}
+
+/* PDF download is independent of opening the lesson or its temporary ink. */
+.material-card{padding:0;gap:0;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.material-open{display:flex;align-items:center;gap:20px;text-align:left;padding:24px;flex:1;min-width:0;border:0;background:transparent}
+.material-open .material-info{min-width:0}
+.download-pdf{display:inline-flex;align-items:center;justify-content:center;min-height:44px;flex-shrink:0;margin-right:20px;padding:10px 14px;border:1px solid var(--line);border-radius:8px;color:var(--wine);font-size:12px;text-decoration:none;background:white}
+.download-pdf:hover{background:var(--soft);border-color:var(--wine)}
+@media(max-width:700px){.material-card{flex-wrap:wrap}.material-open{padding:18px;gap:13px;flex-basis:100%}.download-pdf{margin:0 18px 16px 83px}}
