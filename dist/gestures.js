@@ -30,6 +30,8 @@ export class TouchNavigator {
       return;
     }
     if (e.pointerType !== 'touch' || e.target?.closest?.('button,input,select,a')) return;
+    // A new contact must not inherit a stale palm ID after a missed touch-end.
+    this.ignoredTouches.delete(e.pointerId);
     if (this.options.isPenActive()) {
       this.ignoredTouches.add(e.pointerId);e.preventDefault();e.stopPropagation();return;
     }

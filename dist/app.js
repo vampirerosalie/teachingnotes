@@ -1,9 +1,9 @@
 import {materials} from './materials.js';
-import {InkLayer} from './ink.js?v=3';
-import {PDFReader} from './pdf-reader.js?v=3';
-import {readingMode} from './reading-mode.js?v=3';
-import {maskPassword} from './password.js?v=3';
-import {selectionGuard} from './selection-guard.js?v=3';
+import {InkLayer} from './ink.js?v=3.1';
+import {PDFReader} from './pdf-reader.js?v=3.1';
+import {readingMode} from './reading-mode.js?v=3.1';
+import {maskPassword} from './password.js?v=3.1';
+import {selectionGuard} from './selection-guard.js?v=3.1';
 const $=s=>document.querySelector(s);
 const levels=['Year 4','Year 5','Year 6','Form 1','Form 2','Form 3','Form 4','Form 5'];
 const months=['January','February','March','April','May','June','July','August','September','October','November','December'];

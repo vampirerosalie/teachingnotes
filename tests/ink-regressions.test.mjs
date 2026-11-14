@@ -38,5 +38,6 @@ const nav=new TouchNavigator(surface,{getZoom:()=>1,zoomAt:()=>zooms++,canDraw:(
 const touch=(id,x,y)=>ev(x,y,{pointerId:id,pointerType:'touch',timeStamp:100,target:surface});
 nav.down(touch(2,100,100));nav.down(ev(10,10));ink.start(ev(10,10));nav.move(touch(2,100,500));nav.down(touch(3,300,300));nav.move(touch(3,500,500));assert.equal(surface.scrollTop,0);assert.equal(zooms,0);assert.equal(ink.pointer,1);
 ink.end(ev(10,10));nav.end(touch(2,100,500));nav.end(touch(3,500,500));nav.down(touch(4,100,300));nav.move(touch(4,100,100));assert.equal(surface.scrollTop,200,'Intentional finger scrolling works after writing');
+nav.end(touch(4,100,100));nav.ignoredTouches.add(5);nav.down(touch(5,100,300));nav.move(touch(5,100,100));assert.equal(surface.scrollTop,400,'Fresh touch recovers even if its previous palm-end event was missed');
 nav.destroy();guard.destroy();ink.destroy();assert.equal(ink.bindings.length,0);
 console.log('PASS: Safari empty event fallback, persistent paths, cheap history, hover/missed-up/outside-up/blur recovery, selection blocking, editable fields, palm isolation and scrolling after writing.');dom.window.close();

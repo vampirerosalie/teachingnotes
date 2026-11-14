@@ -1,4 +1,4 @@
-import {TouchNavigator} from './gestures.js?v=3';
+import {TouchNavigator} from './gestures.js?v=3.1';
 const GUTTER = 16, GAP = 20, MAX_CANVASES = 5;
 export const limitZoom = z => Math.max(.5, Math.min(4, z));
 
