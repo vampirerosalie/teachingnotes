@@ -4,12 +4,13 @@ A static GitHub Pages teaching library for iPad Safari. Browse level → subject
 
 ## Current materials
 
-The original five materials are under **November**. The Form 3 Science teacher’s complete Chapter 1 PDF from Drive → 1214 → 科学 is under **January**. F4–5 materials are deliberately filed under **Form 4** only.
+The original five materials are under **November**. The Form 1 Science Chapter 1 illustrated English–BM notes and exercises, and the Form 3 Science teacher’s complete Chapter 1 PDF, from Drive → 1214 → 科学 are under **January**. F4–5 materials are deliberately filed under **Form 4** only.
 
 | Level | Subject | Material |
 | --- | --- | --- |
 | Form 1 | BI | 11 BI F1.pdf |
 | Form 1 | Science | 11 SC F1.html |
+| Form 1 | Science | Science F1 2027 — Chapter 1 Illustrated Notes & Exercises (English-BM).pdf (January) |
 | Form 3 | Science | F3 C1 SC_教师完整版.pdf (January) |
 | Form 4 | BI | F45 NEXT YEAR.pdf |
 | Form 4 | BI | SS4 English Form 4–5 November Set 02 PDF |
