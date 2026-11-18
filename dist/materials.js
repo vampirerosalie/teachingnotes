@@ -1,4 +1,5 @@
 export const materials = [
+ {id:'f3-bi-jan-units12',level:'Form 3',subject:'BI',month:1,title:'English · Units 1–2 · Interactive Teaching Deck',file:'f3-bi-units1-2-january.html',type:'html',original:'F3 Units 1–2 Interactive Teaching Deck.html',detail:'Form 3 · Units 1–2 · Reading, grammar, listening & vocabulary · iPad interactive deck'},
  {id:'f1-bi',level:'Form 1',subject:'BI',month:11,title:'English · November booklet',file:'f1-english.pdf',type:'pdf',original:'11 BI F1.pdf'},
  {id:'f1-sc',level:'Form 1',subject:'Science',month:11,title:'Chapter 6 · Periodic Table',file:'f1-science.html',type:'html',original:'11 SC F1.html',detail:'Elements, mixtures & compounds · Interactive teaching deck'},
  {id:'f4-reading',level:'Form 4',subject:'BI',month:11,title:'English · Set 02 Reading',file:'f4-english-reading.html',type:'html',original:'SS4_English_Form_4-5_November_Set02_READING_V01.html',detail:'Form 4–5 material · Interactive reading deck'},
