@@ -1,4 +1,4 @@
-import {materials} from './materials.js?v=3.13';
+import {materials} from './materials.js?v=3.14';
 import {InkLayer} from './ink.js?v=3.1';
 import {PDFReader} from './pdf-reader.js?v=3.1';
 import {readingMode} from './reading-mode.js?v=3.1';
