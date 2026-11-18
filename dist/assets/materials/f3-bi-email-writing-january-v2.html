@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5, user-scalable=yes">
+<title>Email Writing — Form 3</title>
+<style>
+  :root{--navy:#142f5f;--blue:#376fd0;--pale:#edf5ff;--teal:#12877f;--gold:#f6bd54;--ink:#25334a;--muted:#64738c;--line:#d8e5f7;--paper:#fff;--cream:#fff9eb;--green:#effbf7;--rose:#fff1f4;--shadow:0 16px 38px rgba(20,47,95,.14);--radius:24px;--zoom:1;--textScale:1;}
+  *{box-sizing:border-box} html,body{height:100%;margin:0;overflow:hidden;color:var(--ink);background:linear-gradient(145deg,#e8f2ff,#f8fbff 58%,#fff7e9);font-family:"Trebuchet MS","Segoe UI",Arial,sans-serif;-webkit-text-size-adjust:100%;}
+  button{font:inherit;touch-action:manipulation} .app{height:100vh;padding:13px;display:grid;grid-template-columns:244px minmax(0,1fr);gap:13px}
+  aside{min-height:0;display:flex;flex-direction:column;padding:18px 14px;border-radius:28px;color:#fff;background:linear-gradient(170deg,#173a74,#0d2348 72%);box-shadow:var(--shadow)}
+  .brand{font-weight:950;font-size:25px;line-height:1.02} .brand span{display:block;margin-top:8px;color:#b7d3ff;font-size:12px;letter-spacing:1.1px} .side-note{margin:14px 2px 13px;color:#deebff;font-size:12px;line-height:1.42}
+  #nav{min-height:0;overflow:auto;display:grid;gap:7px;padding-right:3px} #nav::-webkit-scrollbar{width:7px} #nav::-webkit-scrollbar-thumb{background:#5275a8;border-radius:10px}
+  .nav-item{display:flex;align-items:center;gap:9px;width:100%;padding:9px;border:2px solid rgba(255,255,255,.11);border-radius:16px;background:rgba(255,255,255,.06);color:#fff;text-align:left;cursor:pointer;transition:.18s}
+  .nav-item.active{background:#fff;color:var(--navy);border-color:#fff;transform:translateX(3px)} .nav-no{width:26px;height:26px;display:grid;place-items:center;flex:0 0 auto;border-radius:50%;background:rgba(255,255,255,.17);font-size:12px;font-weight:950} .nav-item.active .nav-no{background:var(--blue);color:#fff} .nav-text{font-size:12.2px;line-height:1.14;font-weight:900}
+  .tools{margin-top:auto;padding-top:11px;display:grid;gap:8px} .zoom-row{display:grid;grid-template-columns:1fr 1fr;gap:7px} .tool-btn{border:0;border-radius:13px;padding:10px 8px;background:#fff;color:var(--navy);font-weight:950;cursor:pointer} .tool-btn.gold{background:var(--gold);color:#513700}
+  main{min-width:0;min-height:0;display:flex;flex-direction:column;gap:11px} .topbar{display:flex;align-items:center;gap:13px;padding:13px 17px;border-radius:23px;background:#fff;box-shadow:var(--shadow)} .top-title{flex:1;min-width:0} .top-title h1{margin:0;color:var(--navy);font-size:27px;line-height:1.05} .top-title p{margin:4px 0 0;color:var(--muted);font-weight:750;font-size:14px} .top-actions{display:flex;gap:8px} .top-btn{border:0;border-radius:16px;padding:11px 15px;background:var(--blue);color:#fff;font-weight:950;cursor:pointer} .top-btn.light{background:#f2f7ff;color:var(--navy);border:2px solid var(--line)}
+  .stage{height:0;min-height:0;flex:1 1 0;overflow:auto;border-radius:27px;background:#fff;box-shadow:var(--shadow);scrollbar-gutter:stable both-edges;overscroll-behavior:contain;touch-action:pan-x pan-y;cursor:default} .canvas{zoom:var(--zoom);min-width:100%;min-height:100%;padding:22px 24px 34px;transform-origin:top left}
+  .screen{display:none;min-width:860px;min-height:calc(100vh - 135px)} .screen.active{display:block} .headline{display:flex;align-items:flex-start;gap:13px;margin-bottom:16px} .badge{width:46px;height:46px;display:grid;place-items:center;flex:0 0 auto;border-radius:15px;background:var(--navy);color:#fff;font-size:21px;font-weight:950} .headline h2{margin:0;color:var(--navy);font-size:33px;line-height:1.05} .headline p{margin:5px 0 0;color:var(--muted);font-size:17px;font-weight:750} .tag{margin-left:auto;padding:8px 12px;border:2px solid #d7e5fb;border-radius:999px;background:#eff6ff;color:#385c98;font-size:13px;font-weight:950;white-space:nowrap}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:17px} .grid-prompt{display:grid;grid-template-columns:1.14fr .86fr;gap:17px} .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px} .card{padding:18px;border:2px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,#fff,#f8fbff);box-shadow:0 8px 22px rgba(20,47,95,.07)} .card h3{margin:0 0 10px;color:var(--navy);font-size:22px} .card p,.card li{font-size:19px;line-height:1.47} .card.tint{background:var(--green);border-color:#c8e9df} .card.warm{background:var(--cream);border-color:#efddad} .card.rose{background:var(--rose);border-color:#efcad2} .muted-text{color:var(--muted)}
+  .task-email{padding:20px;border:2px solid #e8d7ad;border-radius:21px;background:#fffdf8;font-family:Georgia,serif;font-size:20px;line-height:1.52} .task-email p{margin:0 0 12px} .focus{margin-top:14px;padding:14px 16px;border:2px solid #d8e6ff;border-radius:18px;background:#f3f8ff} .focus h4{margin:0 0 6px;color:var(--navy);font-size:18px} .focus p{margin:0;font-size:18px;font-weight:800}
+  .talk-list{display:grid;gap:9px} .talk{padding:12px 14px;border:2px solid #dce8fa;border-radius:16px;background:#f5f9ff;color:#2c4e83;font-size:18px;font-weight:850} .prompt-box{padding:17px;border:2px dashed #e5b94d;border-radius:19px;background:var(--cream);color:#5b4300;font-size:25px;line-height:1.45;font-weight:950} .ellipsis{color:#a16c00} .clues{margin-top:11px} .clue{display:inline-block;margin:4px 4px 0 0;padding:6px 10px;border:2px solid #bde7df;border-radius:999px;background:#e8f8f4;color:#08796e;font-size:14px;font-weight:950}
+  .formula{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:8px;align-items:center;margin:13px 0} .formula>div:not(.arrow){min-height:83px;display:grid;place-items:center;padding:12px;border:2px solid #d8e6fa;border-radius:17px;background:#f7faff;text-align:center;font-size:17px} .arrow{color:var(--blue);font-size:24px;font-weight:950}
+  .reveal-zone{display:flex;flex-direction:column;justify-content:center} .reveal-btn{border:0;border-radius:17px;padding:13px 17px;background:var(--teal);color:#fff;font-size:17px;font-weight:950;cursor:pointer;box-shadow:0 9px 22px rgba(18,135,127,.22)} .model,.hidden-all{display:none} .model.show,.hidden-all.show{display:block} .model{margin-top:12px;padding:17px;border:2px solid #bde7da;border-radius:19px;background:#effbf7;color:#1a5851;font-size:20px;line-height:1.55;font-weight:800} .model b{color:#08766e}
+  .breakdown{display:grid;gap:8px;margin-top:12px} .piece{padding:10px 12px;border-left:6px solid var(--blue);border-radius:10px;background:#f2f7ff;font-size:16px;font-weight:800} .piece.point{border-color:#e5a91f;background:#fff8e8} .piece.link{border-color:#12877f;background:#effbf7} .piece.elab{border-color:#bf5972;background:#fff2f5}
+  .zh{display:inline-block;margin-left:3px;padding:1px 5px;border-radius:7px;background:#e4f3ef;color:#08766e;font-family:"KaiTi","STKaiti","Microsoft YaHei",sans-serif;font-size:.78em;font-weight:800;white-space:nowrap} .zh.gold{background:#fff0c8;color:#755100} .zh.blue{background:#e5efff;color:#2e5ca8}
+  .starter-list{display:grid;gap:13px} .starter-row{display:grid;grid-template-columns:1.05fr .95fr;gap:15px;align-items:stretch} .starter-card{padding:15px;border:2px dashed #e5ba50;border-radius:18px;background:var(--cream)} .small-label{margin-bottom:7px;color:#667895;font-size:13px;font-weight:950;text-transform:uppercase;letter-spacing:.6px} .starter{font-size:23px;font-weight:950;color:#5c4300} .sentence-right{padding:13px;border:2px solid #d9e6f8;border-radius:18px;background:#fbfdff}
+  .vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px} .word{padding:12px 13px;border:2px solid #dce8f8;border-radius:14px;background:#f8fbff;font-size:17px;line-height:1.35} .word b{color:var(--navy)} .email-paper{padding:22px;border:2px solid #e7d9b8;border-radius:22px;background:#fffdf8;color:#30291d;font-family:Georgia,serif;font-size:18px;line-height:1.58} .email-paper p{margin:0 0 15px}
+  .checklist{display:grid;gap:9px} .check{padding:11px 13px;border:2px solid #d8e6f8;border-radius:15px;background:#f6faff;font-size:17px;font-weight:850} .callout{margin-top:13px;padding:13px 15px;border:2px solid #edce7f;border-radius:18px;background:#fff2d9;color:#694900;font-size:17px;line-height:1.4;font-weight:900} .bottom-line{width:100%;height:8px;margin-top:20px;border-radius:999px;background:linear-gradient(90deg,var(--navy),var(--blue),var(--teal),var(--gold))}
+  .section-hero{min-height:calc(100vh - 170px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;border-radius:28px;background:linear-gradient(145deg,#173a74,#376fd0 58%,#12877f);color:#fff} .section-hero h2{font-size:46px;margin:10px 0} .section-hero p{max-width:820px;font-size:22px;line-height:1.5} .hero-kicker{font-weight:950;letter-spacing:2px;color:#cfe2ff} .hero-chips{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:16px} .hero-chips span{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.14);font-weight:900}
+  .modal{display:none;position:fixed;inset:0;z-index:30;align-items:center;justify-content:center;padding:20px;background:rgba(6,23,53,.6)} .modal.show{display:flex} .modal-card{position:relative;width:min(900px,93vw);padding:25px;border-radius:26px;background:#fff;box-shadow:var(--shadow)} .close{position:absolute;right:15px;top:15px;border:0;border-radius:12px;padding:9px 11px;background:#edf4ff;color:var(--navy);font-weight:950;cursor:pointer}
+  @media(max-width:980px){.app{grid-template-columns:194px minmax(0,1fr)}.top-title h1{font-size:23px}.headline h2{font-size:29px}.grid2,.grid-prompt,.grid3,.starter-row{grid-template-columns:1fr}.screen{min-width:720px}}
+  @media(max-width:760px){html,body{height:auto;min-height:100dvh;overflow:auto}.app{display:block;height:auto;min-height:100dvh;padding:8px}aside{min-height:auto;padding:13px;border-radius:20px}.brand{font-size:20px}.brand span{font-size:10px;margin-top:5px}.side-note{display:none}#nav{display:flex;overflow-x:auto;overflow-y:hidden;padding:9px 0 5px}.nav-item{min-width:145px}.tools{display:none}main{margin-top:8px}.topbar{padding:12px;flex-wrap:wrap;border-radius:20px}.top-actions{width:100%;justify-content:space-between}.top-title h1{font-size:20px}.stage{height:auto;overflow:visible;border-radius:20px}.canvas{zoom:1!important;padding:14px}.screen{min-width:0;min-height:0}.headline h2{font-size:25px}.headline p{font-size:14px}.card p,.card li{font-size:16px}.task-email{font-size:17px}.prompt-box{font-size:20px}.starter{font-size:19px}.formula{grid-template-columns:1fr}.arrow{transform:rotate(90deg);text-align:center}.model{font-size:17px}.email-paper{font-size:16px}.vocab-grid{grid-template-columns:1fr}.section-hero h2{font-size:34px}}
+
+  /* January Email Writing revision: keep pre-reveal screens uncluttered. */
+  .screen[data-title*="Body Sentence"] .grid-prompt > .card:first-child .talk-list{display:none!important}
+  .screen[data-title*="Body Sentence"] .breakdown{display:none}
+  .screen[data-title*="Body Sentence"] .breakdown.show{display:grid}
+  .screen[data-title*="Body Sentence"] .grid-prompt > .card:first-child{align-self:start}
+  .screen[data-title*="Body Sentence"] .clues{margin-top:14px}
+  .screen[data-title*="Body Sentence"] .clue{font-size:calc(14px * var(--textScale))}
+
+  /* Bigger / Smaller changes teaching text, while finger pinch zooms the whole deck. */
+  .canvas .headline h2{font-size:calc(33px * var(--textScale))}
+  .canvas .headline p{font-size:calc(17px * var(--textScale))}
+  .canvas .card h3{font-size:calc(22px * var(--textScale))}
+  .canvas .card p,.canvas .card li{font-size:calc(19px * var(--textScale))}
+  .canvas .task-email{font-size:calc(20px * var(--textScale))}
+  .canvas .focus h4{font-size:calc(18px * var(--textScale))}
+  .canvas .focus p{font-size:calc(18px * var(--textScale))}
+  .canvas .talk{font-size:calc(18px * var(--textScale))}
+  .canvas .prompt-box{font-size:calc(25px * var(--textScale))}
+  .canvas .formula>div:not(.arrow){font-size:calc(17px * var(--textScale))}
+  .canvas .reveal-btn{font-size:calc(17px * var(--textScale))}
+  .canvas .model{font-size:calc(20px * var(--textScale))}
+  .canvas .piece{font-size:calc(16px * var(--textScale))}
+  .canvas .small-label{font-size:calc(13px * var(--textScale))}
+  .canvas .starter{font-size:calc(23px * var(--textScale))}
+  .canvas .word{font-size:calc(17px * var(--textScale))}
+  .canvas .email-paper{font-size:calc(18px * var(--textScale))}
+  .canvas .check{font-size:calc(17px * var(--textScale))}
+  .canvas .callout{font-size:calc(17px * var(--textScale))}
+  .canvas .section-hero h2{font-size:calc(46px * var(--textScale))}
+  .canvas .section-hero p{font-size:calc(22px * var(--textScale))}
+
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand">EMAIL WRITING<span>FORM 3 · 3 EMAIL TASKS</span></div>
+    <div class="side-note">Prompt first. Let pupils think and write. Reveal only after they attempt each sentence.</div>
+    <div id="nav"></div>
+    <div class="tools">
+      <div class="zoom-row"><button class="tool-btn" id="zoomOut">A− Smaller</button><button class="tool-btn" id="zoomIn">A+ Bigger</button></div>
+      <button class="tool-btn gold" id="fullBtn">⛶ Full Screen</button>
+      <button class="tool-btn" id="notesBtn">Teacher Notes</button>
+    </div>
+  </aside>
+  <main>
+    <div class="topbar"><div class="top-title"><h1>Email Writing</h1><p>Three Form 3 tasks · one complete sentence at a time</p></div><div class="top-actions"><button class="top-btn light" id="prevBtn">← Prev</button><button class="top-btn" id="nextBtn">Next →</button></div></div>
+    <section class="stage" id="stage"><div class="canvas" id="canvas">
+      
+<section class="screen active" data-title="1. Choose an Email" data-notes="Use the three tasks in order or jump directly to the email you want to teach.">
+  <div class="headline"><div class="badge">1</div><div><h2>Email Writing</h2><p>Three Form 3 email tasks — build one complete sentence at a time.</p></div><div class="tag">3 tasks</div></div>
+  <div class="grid3">
+    <div class="card tint jump-card" onclick="jumpToTitle('2. Read the Question')"><h3>🎂 Email 1</h3><p><b>Grandma’s Birthday</b></p><p>Where to celebrate · what to do · how to help</p></div>
+    <div class="card warm"><h3>🏠 Email 2</h3><p><b>Sharing Household Jobs</b></p><p>What jobs · how to organise · busy days</p></div>
+    <div class="card rose"><h3>🍜 Email 3</h3><p><b>Restaurant Recommendation</b></p><p>Food · service · suitable for family dinner?</p></div>
+  </div>
+  <div class="card" style="margin-top:17px"><h3>Our fixed opening</h3><div class="prompt-box">Dear Name,<br><br>Hey, how <span class="ellipsis">...</span><br><br>I didn't know that <span class="ellipsis">...</span><br><br>Well, I will <span class="ellipsis">...</span></div>
+  <div class="callout">Prompt first → pupils write → reveal one sentence → full email only at the end.</div></div>
+  <div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="2. Email 1 — Grandma’s Birthday" data-notes="Section divider. Use Next to begin this email task.">
+  <div class="section-hero"><div class="hero-kicker">FORM 3 · EMAIL 1</div><h2>Email 1 — Grandma’s Birthday</h2><p>In about 80 words, write a message to Ella, suggesting where to celebrate, what the family could do together and how she could help with the preparations.</p><div class="hero-chips"><span>Opening</span><span>3 body sentences</span><span>Vocabulary</span><span>Final model</span></div></div>
+</section>
+<section class="screen" data-title="3. Read the Question" data-notes="Read the message first. Ask pupils to identify the three content points before discussing any model answer.">
+  <div class="headline"><div class="badge">3</div><div><h2>Email 1 — Grandma’s Birthday</h2><p>Read first. Find the three things you must answer.</p></div><div class="tag">No model yet</div></div>
+  <div class="grid-prompt">
+    <div class="card"><h3>Ella's message</h3><div class="task-email"><p>Hi,</p><p>We want to celebrate Grandma&#x27;s birthday next weekend. She dislikes noisy places, but she loves spending time with the family. Where should we celebrate, what could we do together, and how can I help with the preparations?</p><p>Write soon!</p><p>Ella</p></div><div class="focus"><h4>Writing task</h4><p>In about 80 words, write a message to Ella, suggesting where to celebrate, what the family could do together and how she could help with the preparations.</p></div></div>
+    <div class="card"><h3>Find the 3 content points</h3><div class="talk-list">
+      <div class="talk"><strong>1.</strong> Where?</div><div class="talk"><strong>2.</strong> What to do?</div><div class="talk"><strong>3.</strong> How can Ella help?</div>
+    </div><div class="callout">Do not write the full email yet. Plan the three answers first.</div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="4. Plan the Ideas" data-notes="Let pupils suggest their own ideas first. Use these model ideas only after discussion.">
+  <div class="headline"><div class="badge">4</div><div><h2>Plan the Three Ideas</h2><p>One body sentence for each content point.</p></div><div class="tag">3 ideas</div></div>
+  <div class="grid3"><div class="card tint"><h3>Where?</h3>
+        <p><b>Celebrate at home</b></p><p class="muted-text">quiet and comfortable for Grandma</p></div><div class="card warm"><h3>What to do?</h3>
+        <p><b>Cook together + look through old family photographs</b></p><p class="muted-text">spend quality time together</p></div><div class="card rose"><h3>How can Ella help?</h3>
+        <p><b>Plan the menu + set the table</b></p><p class="muted-text">lend a hand with the preparations</p></div></div>
+  <div class="callout">Paragraph 2 will have exactly <strong>three complete sentences</strong>: one sentence for each content point.</div>
+  <div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="5. Email Map" data-notes="Teach the fixed email format. Paragraph 2 contains exactly three complete sentences.">
+  <div class="headline"><div class="badge">5</div><div><h2>Use Our Fixed Email Structure</h2><p>Opening → 3 body sentences → short ending.</p></div><div class="tag">Fixed structure</div></div>
+  <div class="grid2">
+    <div class="card"><h3>Paragraph 1 — Opening</h3><div class="prompt-box">Dear Name,<br><br>Hey, how <span class="ellipsis">...</span><br><br>I didn't know that <span class="ellipsis">...</span><br><br>Well, I will <span class="ellipsis">...</span></div></div>
+    <div class="card"><h3>Paragraph 2 — Three ideas</h3><div class="prompt-box">To begin with, <span class="ellipsis">...</span><br><br>Not only that, <span class="ellipsis">...</span><br><br>Last but not least, <span class="ellipsis">...</span></div></div>
+    <div class="card"><h3>Paragraph 3 — Ending</h3><div class="prompt-box">I hope <span class="ellipsis">...</span><br><br>Love,<br>Name</div></div>
+    <div class="card warm"><h3>Body sentence rule</h3><div class="formula"><div><b>Cohesive device</b><br><span class="zh blue">衔接词</span></div><div class="arrow">+</div><div><b>Point</b><br><span class="zh gold">要点</span></div><div class="arrow">+</div><div><b>Conjunction + elaboration</b><br><span class="zh">连词＋扩展</span></div></div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="6. Build the Opening" data-notes="Reveal one sentence only after pupils attempt the starter. Keep the same fixed opening pattern used in previous Form 3 email decks.">
+  <div class="headline"><div class="badge">6</div><div><h2>Build Paragraph 1: Opening</h2><p>Friendly greeting → adapt the situation → offer help.</p></div><div class="tag">3 sentences</div></div>
+  <div class="starter-list">
+    <div class="starter-row"><div class="starter-card"><div class="small-label">Sentence 1</div><div class="starter">Hey, how <span class="ellipsis">...</span></div><div class="clues"><span class="clue">have you been</span><span class="clue">lately 最近</span></div></div><div class="sentence-right"><button class="reveal-btn" onclick="reveal('e1-open1')">Reveal Model Sentence</button><div class="model" id="e1-open1">Hey, how have you been lately?</div></div></div>
+    <div class="starter-row"><div class="starter-card"><div class="small-label">Sentence 2 — Adapt the question</div><div class="starter">I didn't know that <span class="ellipsis">...</span></div><div class="clues"><span class="clue">planning 筹划</span><span class="clue">celebration 庆祝活动</span></div></div><div class="sentence-right"><button class="reveal-btn" onclick="reveal('e1-open2')">Reveal Model Sentence</button><div class="model" id="e1-open2">I didn&#x27;t know that you are <b>planning</b><span class="zh">筹划</span> Grandma&#x27;s birthday <b>celebration</b><span class="zh">庆祝活动</span> for next weekend.</div></div></div>
+    <div class="starter-row"><div class="starter-card"><div class="small-label">Sentence 3 — Offer help</div><div class="starter">Well, I will <span class="ellipsis">...</span></div><div class="clues"><span class="clue">share 分享</span><span class="clue">suggestions 建议</span></div></div><div class="sentence-right"><button class="reveal-btn" onclick="reveal('e1-open3')">Reveal Model Sentence</button><div class="model" id="e1-open3">Well, I will share some suggestions with you.</div></div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="7. Body Sentence 1" data-notes="Let pupils complete the starter first. Reveal the model only after they have attempted a full sentence. Then identify connector, point, conjunction and elaboration.">
+  <div class="headline"><div class="badge">7</div><div><h2>Paragraph 2: Sentence 1</h2><p>Answer one content point and extend it.</p></div><div class="tag">Point 1 + elaboration</div></div>
+  <div class="grid-prompt">
+    <div class="card"><h3>Think and write</h3><div class="prompt-box">To begin with, I think you should ... because ...</div><div class="clues"><span class="clue">at ease 自在／放松</span><span class="clue">peaceful setting 安静舒适的环境</span><span class="clue">catch up 叙旧／聊近况</span></div><div class="talk-list" style="margin-top:14px"><div class="talk"><strong>Point:</strong> celebrate at home</div><div class="talk"><strong>Elaboration:</strong> Grandma feels at ease in a peaceful setting; everyone can catch up comfortably</div></div></div>
+    <div class="card reveal-zone"><h3>Reveal after pupils write</h3><button class="reveal-btn" onclick="reveal('e1-body1')">Reveal Model Sentence</button><div class="model" id="e1-body1">To begin with, I think you should hold the celebration at home because Grandma would feel <b>at ease</b><span class="zh">自在／放松</span> in a <b>peaceful setting</b><span class="zh">安静舒适的环境</span> where everyone can <b>catch up</b><span class="zh">叙旧／聊近况</span> comfortably.</div><div class="breakdown"><div class="piece"><b>Cohesive device:</b> To begin with</div><div class="piece point"><b>Point:</b> celebrate at home</div><div class="piece link"><b>Conjunction:</b> because</div><div class="piece elab"><b>Elaboration:</b> Grandma feels at ease in a peaceful setting; everyone can catch up comfortably</div></div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="8. Body Sentence 2" data-notes="Let pupils complete the starter first. Reveal the model only after they have attempted a full sentence. Then identify connector, point, conjunction and elaboration.">
+  <div class="headline"><div class="badge">8</div><div><h2>Paragraph 2: Sentence 2</h2><p>Answer one content point and extend it.</p></div><div class="tag">Point 2 + elaboration</div></div>
+  <div class="grid-prompt">
+    <div class="card"><h3>Think and write</h3><div class="prompt-box">Not only that, the family could ... so that ...</div><div class="clues"><span class="clue">whip up 快速做出</span><span class="clue">memory lane 回忆往事</span><span class="clue">quality time 高质量的相处时间</span></div><div class="talk-list" style="margin-top:14px"><div class="talk"><strong>Point:</strong> whip up her favourite meal and look through old photographs</div><div class="talk"><strong>Elaboration:</strong> take a trip down memory lane and spend quality time together</div></div></div>
+    <div class="card reveal-zone"><h3>Reveal after pupils write</h3><button class="reveal-btn" onclick="reveal('e1-body2')">Reveal Model Sentence</button><div class="model" id="e1-body2">Not only that, the family could <b>whip up</b><span class="zh">快速做出</span> her favourite meal and <b>look through</b><span class="zh">翻看／浏览</span> old photographs so that everyone can <b>take a trip down memory lane</b><span class="zh">一起回忆往事</span> and spend <b>quality time</b><span class="zh">高质量的相处时间</span> together.</div><div class="breakdown"><div class="piece"><b>Cohesive device:</b> Not only that</div><div class="piece point"><b>Point:</b> whip up her favourite meal and look through old photographs</div><div class="piece link"><b>Conjunction:</b> so that</div><div class="piece elab"><b>Elaboration:</b> take a trip down memory lane and spend quality time together</div></div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="9. Body Sentence 3" data-notes="Let pupils complete the starter first. Reveal the model only after they have attempted a full sentence. Then identify connector, point, conjunction and elaboration.">
+  <div class="headline"><div class="badge">9</div><div><h2>Paragraph 2: Sentence 3</h2><p>Answer one content point and extend it.</p></div><div class="tag">Point 3 + elaboration</div></div>
+  <div class="grid-prompt">
+    <div class="card"><h3>Think and write</h3><div class="prompt-box">Last but not least, you can ... so that ...</div><div class="clues"><span class="clue">draw up 拟定</span><span class="clue">set the table 摆餐具</span><span class="clue">lend a hand 帮忙</span><span class="clue">run smoothly 顺利进行</span></div><div class="talk-list" style="margin-top:14px"><div class="talk"><strong>Point:</strong> draw up the menu and set the table</div><div class="talk"><strong>Elaboration:</strong> lend a hand and make sure everything runs smoothly</div></div></div>
+    <div class="card reveal-zone"><h3>Reveal after pupils write</h3><button class="reveal-btn" onclick="reveal('e1-body3')">Reveal Model Sentence</button><div class="model" id="e1-body3">Last but not least, you can <b>draw up</b><span class="zh">拟定</span> the menu and <b>set the table</b><span class="zh">摆餐具</span> so that you can <b>lend a hand</b><span class="zh">帮忙</span> and make sure everything <b>runs smoothly</b><span class="zh">顺利进行</span>.</div><div class="breakdown"><div class="piece"><b>Cohesive device:</b> Last but not least</div><div class="piece point"><b>Point:</b> draw up the menu and set the table</div><div class="piece link"><b>Conjunction:</b> so that</div><div class="piece elab"><b>Elaboration:</b> lend a hand and make sure everything runs smoothly</div></div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="10. Ending" data-notes="Keep the ending short. Use Name as the student placeholder.">
+  <div class="headline"><div class="badge">10</div><div><h2>Build the Ending</h2><p>Ask for a reply and sign off.</p></div><div class="tag">Keep it short</div></div>
+  <div class="starter-list">
+    <div class="starter-row"><div class="starter-card"><div class="small-label">Final sentence</div><div class="starter">I hope <span class="ellipsis">...</span></div><div class="clues"><span class="clue">reply 回复</span><span class="clue">soon 很快</span></div></div><div class="sentence-right"><button class="reveal-btn" onclick="reveal('e1-end1')">Reveal Final Sentence</button><div class="model" id="e1-end1">I hope you can reply soon.</div></div></div>
+    <div class="starter-row"><div class="starter-card"><div class="small-label">Sign-off</div><div class="starter">Love,<br><span class="ellipsis">...</span></div></div><div class="sentence-right"><button class="reveal-btn" onclick="reveal('e1-end2')">Reveal Sign-off</button><div class="model" id="e1-end2">Love,<br><b>Name</b></div></div></div>
+  </div><div class="callout">Use <strong>Name</strong> as the student placeholder.</div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="11. Vocabulary" data-notes="Focus on useful vocabulary and genuine phrasal verbs/idioms. Chinese support is attached to vocabulary, not whole ordinary clauses.">
+  <div class="headline"><div class="badge">11</div><div><h2>Vocabulary Toolkit</h2><p>Useful vocabulary, phrasal verbs and idioms.</p></div><div class="tag">English + 中文</div></div>
+  <div class="vocab-grid"><div class="word"><b>celebration</b> — 庆祝活动</div><div class="word"><b>at ease</b> — 自在／放松</div><div class="word"><b>whip up</b> — 快速做出</div><div class="word"><b>look through</b> — 翻看／浏览</div><div class="word"><b>take a trip down memory lane</b> — 一起回忆往事</div><div class="word"><b>draw up</b> — 拟定</div><div class="word"><b>set the table</b> — 摆餐具</div><div class="word"><b>pitch in</b> — 一起帮忙</div><div class="word"><b>run smoothly</b> — 顺利进行</div><div class="word"><b>catch up</b> — 叙旧／聊近况</div><div class="word"><b>preparations</b> — 准备工作</div></div>
+  <div class="callout">Chinese support is for useful vocabulary and real fixed expressions — not for translating every clause.</div>
+  <div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="12. Full Model Email" data-notes="Final reveal only. Pupils should improve their own draft before comparing it with the complete model.">
+  <div class="headline"><div class="badge">12</div><div><h2>Check the Full Model Email</h2><p>Reveal only after pupils finish their own version.</p></div><div class="tag">Final check</div></div>
+  <div class="grid2">
+    <div class="card"><h3>Before revealing</h3><div class="checklist">
+      <div class="check">✓ Do I have the fixed three-sentence opening?</div>
+      <div class="check">✓ Did I answer all three content points?</div>
+      <div class="check">✓ Do I have exactly three body sentences?</div>
+      <div class="check">✓ Does every body sentence have an elaboration?</div>
+      <div class="check">✓ Did I use To begin with, Not only that, and Last but not least?</div>
+      <div class="check">✓ Did I finish with Love, Name?</div>
+    </div><div class="callout">Write first. Compare later.</div></div>
+    <div class="card reveal-zone"><h3>Complete answer</h3><button class="reveal-btn" onclick="reveal('e1-full')">Reveal Full Email</button>
+      <div class="hidden-all" id="e1-full"><div class="email-paper">
+        <p>Dear Ella,</p>
+        <p>Hey, how have you been lately? I didn&#x27;t know that you are <b>planning</b><span class="zh">筹划</span> Grandma&#x27;s birthday <b>celebration</b><span class="zh">庆祝活动</span> for next weekend. Well, I will share some suggestions with you.</p>
+        <p>To begin with, I think you should hold the celebration at home because Grandma would feel <b>at ease</b><span class="zh">自在／放松</span> in a <b>peaceful setting</b><span class="zh">安静舒适的环境</span> where everyone can <b>catch up</b><span class="zh">叙旧／聊近况</span> comfortably. Not only that, the family could <b>whip up</b><span class="zh">快速做出</span> her favourite meal and <b>look through</b><span class="zh">翻看／浏览</span> old photographs so that everyone can <b>take a trip down memory lane</b><span class="zh">一起回忆往事</span> and spend <b>quality time</b><span class="zh">高质量的相处时间</span> together. Last but not least, you can <b>draw up</b><span class="zh">拟定</span> the menu and <b>set the table</b><span class="zh">摆餐具</span> so that you can <b>lend a hand</b><span class="zh">帮忙</span> and make sure everything <b>runs smoothly</b><span class="zh">顺利进行</span>.</p>
+        <p>I hope you can reply soon.</p>
+        <p>Love,<br>Name</p>
+      </div></div>
+    </div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="13. Email 2 — Sharing Household Jobs" data-notes="Section divider. Use Next to begin this email task.">
+  <div class="section-hero"><div class="hero-kicker">FORM 3 · EMAIL 2</div><h2>Email 2 — Sharing Household Jobs</h2><p>In about 80 words, write a message to Ben, giving advice on sharing household jobs, organising them and dealing with busy days.</p><div class="hero-chips"><span>Opening</span><span>3 body sentences</span><span>Vocabulary</span><span>Final model</span></div></div>
+</section>
+<section class="screen" data-title="14. Read the Question" data-notes="Read the message first. Ask pupils to identify the three content points before discussing any model answer.">
+  <div class="headline"><div class="badge">14</div><div><h2>Email 2 — Sharing Household Jobs</h2><p>Read first. Find the three things you must answer.</p></div><div class="tag">No model yet</div></div>
+  <div class="grid-prompt">
+    <div class="card"><h3>Ben's message</h3><div class="task-email"><p>Hi,</p><p>My parents are busier now, so my sister and I have to help more at home. We keep arguing about who should do each job. What jobs could we share, how should we organise them, and what should we do if one of us is busy?</p><p>Ben</p></div><div class="focus"><h4>Writing task</h4><p>In about 80 words, write a message to Ben, giving advice on sharing household jobs, organising them and dealing with busy days.</p></div></div>
+    <div class="card"><h3>Find the 3 content points</h3><div class="talk-list">
+      <div class="talk"><strong>1.</strong> What jobs?</div><div class="talk"><strong>2.</strong> How to organise?</div><div class="talk"><strong>3.</strong> If someone is busy?</div>
+    </div><div class="callout">Do not write the full email yet. Plan the three answers first.</div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="15. Plan the Ideas" data-notes="Let pupils suggest their own ideas first. Use these model ideas only after discussion.">
+  <div class="headline"><div class="badge">15</div><div><h2>Plan the Three Ideas</h2><p>One body sentence for each content point.</p></div><div class="tag">3 ideas</div></div>
+  <div class="grid3"><div class="card tint"><h3>What jobs?</h3>
+        <p><b>Share simple household chores</b></p><p class="muted-text">washing dishes, laying the table, preparing vegetables</p></div><div class="card warm"><h3>How to organise?</h3>
+        <p><b>Use a weekly timetable + take turns</b></p><p class="muted-text">everyone knows what to do</p></div><div class="card rose"><h3>If someone is busy?</h3>
+        <p><b>Swap jobs or help each other</b></p><p class="muted-text">nothing is left unfinished</p></div></div>
+  <div class="callout">Paragraph 2 will have exactly <strong>three complete sentences</strong>: one sentence for each content point.</div>
+  <div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="16. Email Map" data-notes="Teach the fixed email format. Paragraph 2 contains exactly three complete sentences.">
+  <div class="headline"><div class="badge">16</div><div><h2>Use Our Fixed Email Structure</h2><p>Opening → 3 body sentences → short ending.</p></div><div class="tag">Fixed structure</div></div>
+  <div class="grid2">
+    <div class="card"><h3>Paragraph 1 — Opening</h3><div class="prompt-box">Dear Name,<br><br>Hey, how <span class="ellipsis">...</span><br><br>I didn't know that <span class="ellipsis">...</span><br><br>Well, I will <span class="ellipsis">...</span></div></div>
+    <div class="card"><h3>Paragraph 2 — Three ideas</h3><div class="prompt-box">To begin with, <span class="ellipsis">...</span><br><br>Not only that, <span class="ellipsis">...</span><br><br>Last but not least, <span class="ellipsis">...</span></div></div>
+    <div class="card"><h3>Paragraph 3 — Ending</h3><div class="prompt-box">I hope <span class="ellipsis">...</span><br><br>Love,<br>Name</div></div>
+    <div class="card warm"><h3>Body sentence rule</h3><div class="formula"><div><b>Cohesive device</b><br><span class="zh blue">衔接词</span></div><div class="arrow">+</div><div><b>Point</b><br><span class="zh gold">要点</span></div><div class="arrow">+</div><div><b>Conjunction + elaboration</b><br><span class="zh">连词＋扩展</span></div></div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="17. Build the Opening" data-notes="Reveal one sentence only after pupils attempt the starter. Keep the same fixed opening pattern used in previous Form 3 email decks.">
+  <div class="headline"><div class="badge">17</div><div><h2>Build Paragraph 1: Opening</h2><p>Friendly greeting → adapt the situation → offer help.</p></div><div class="tag">3 sentences</div></div>
+  <div class="starter-list">
+    <div class="starter-row"><div class="starter-card"><div class="small-label">Sentence 1</div><div class="starter">Hey, how <span class="ellipsis">...</span></div><div class="clues"><span class="clue">have you been</span><span class="clue">lately 最近</span></div></div><div class="sentence-right"><button class="reveal-btn" onclick="reveal('e2-open1')">Reveal Model Sentence</button><div class="model" id="e2-open1">Hey, how have you been lately?</div></div></div>
+    <div class="starter-row"><div class="starter-card"><div class="small-label">Sentence 2 — Adapt the question</div><div class="starter">I didn't know that <span class="ellipsis">...</span></div><div class="clues"><span class="clue">arguing 争吵</span><span class="clue">household 家庭的</span></div></div><div class="sentence-right"><button class="reveal-btn" onclick="reveal('e2-open2')">Reveal Model Sentence</button><div class="model" id="e2-open2">I didn&#x27;t know that you and your sister keep <b>arguing</b><span class="zh">争吵</span> about how to share the <b>household</b><span class="zh">家庭的</span> jobs.</div></div></div>
+    <div class="starter-row"><div class="starter-card"><div class="small-label">Sentence 3 — Offer help</div><div class="starter">Well, I will <span class="ellipsis">...</span></div><div class="clues"><span class="clue">share 分享</span><span class="clue">suggestions 建议</span></div></div><div class="sentence-right"><button class="reveal-btn" onclick="reveal('e2-open3')">Reveal Model Sentence</button><div class="model" id="e2-open3">Well, I will share some suggestions with you.</div></div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="18. Body Sentence 1" data-notes="Let pupils complete the starter first. Reveal the model only after they have attempted a full sentence. Then identify connector, point, conjunction and elaboration.">
+  <div class="headline"><div class="badge">18</div><div><h2>Paragraph 2: Sentence 1</h2><p>Answer one content point and extend it.</p></div><div class="tag">Point 1 + elaboration</div></div>
+  <div class="grid-prompt">
+    <div class="card"><h3>Think and write</h3><div class="prompt-box">To begin with, you could ... because ...</div><div class="clues"><span class="clue">pull your weight 尽自己的本分</span><span class="clue">lion's share 大部分工作</span><span class="clue">fairly 公平地</span></div><div class="talk-list" style="margin-top:14px"><div class="talk"><strong>Point:</strong> divide the chores fairly</div><div class="talk"><strong>Elaboration:</strong> pull your weight; avoid leaving one person the lion's share</div></div></div>
+    <div class="card reveal-zone"><h3>Reveal after pupils write</h3><button class="reveal-btn" onclick="reveal('e2-body1')">Reveal Model Sentence</button><div class="model" id="e2-body1">To begin with, you could divide the chores fairly because both of you should <b>pull your weight</b><span class="zh">尽自己的本分</span> instead of leaving one person to do <b>the lion's share</b><span class="zh">大部分工作</span>.</div><div class="breakdown"><div class="piece"><b>Cohesive device:</b> To begin with</div><div class="piece point"><b>Point:</b> divide the chores fairly</div><div class="piece link"><b>Conjunction:</b> because</div><div class="piece elab"><b>Elaboration:</b> pull your weight; avoid leaving one person the lion's share</div></div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="19. Body Sentence 2" data-notes="Let pupils complete the starter first. Reveal the model only after they have attempted a full sentence. Then identify connector, point, conjunction and elaboration.">
+  <div class="headline"><div class="badge">19</div><div><h2>Paragraph 2: Sentence 2</h2><p>Answer one content point and extend it.</p></div><div class="tag">Point 2 + elaboration</div></div>
+  <div class="grid-prompt">
+    <div class="card"><h3>Think and write</h3><div class="prompt-box">Not only that, make ... so that ...</div><div class="clues"><span class="clue">draw up 拟定</span><span class="clue">weekly timetable 每周时间表</span><span class="clue">take turns 轮流</span></div><div class="talk-list" style="margin-top:14px"><div class="talk"><strong>Point:</strong> draw up a weekly timetable and take turns</div><div class="talk"><strong>Elaboration:</strong> both know exactly what needs to be done</div></div></div>
+    <div class="card reveal-zone"><h3>Reveal after pupils write</h3><button class="reveal-btn" onclick="reveal('e2-body2')">Reveal Model Sentence</button><div class="model" id="e2-body2">Not only that, <b>draw up</b><span class="zh">拟定</span> a weekly timetable and <b>take turns</b><span class="zh">轮流</span> doing the less popular chores so that both of you know exactly what needs to be done.</div><div class="breakdown"><div class="piece"><b>Cohesive device:</b> Not only that</div><div class="piece point"><b>Point:</b> draw up a weekly timetable and take turns</div><div class="piece link"><b>Conjunction:</b> so that</div><div class="piece elab"><b>Elaboration:</b> both know exactly what needs to be done</div></div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="20. Body Sentence 3" data-notes="Let pupils complete the starter first. Reveal the model only after they have attempted a full sentence. Then identify connector, point, conjunction and elaboration.">
+  <div class="headline"><div class="badge">20</div><div><h2>Paragraph 2: Sentence 3</h2><p>Answer one content point and extend it.</p></div><div class="tag">Point 3 + elaboration</div></div>
+  <div class="grid-prompt">
+    <div class="card"><h3>Think and write</h3><div class="prompt-box">Last but not least, if one of you is busy, ... so that ...</div><div class="clues"><span class="clue">tied up 忙得脱不开身</span><span class="clue">pitch in 一起帮忙</span><span class="clue">overwhelmed 不堪重负的</span></div><div class="talk-list" style="margin-top:14px"><div class="talk"><strong>Point:</strong> swap chores or pitch in</div><div class="talk"><strong>Elaboration:</strong> nothing is left undone; neither person feels overwhelmed</div></div></div>
+    <div class="card reveal-zone"><h3>Reveal after pupils write</h3><button class="reveal-btn" onclick="reveal('e2-body3')">Reveal Model Sentence</button><div class="model" id="e2-body3">Last but not least, if one of you is <b>tied up</b><span class="zh">忙得脱不开身</span>, simply swap chores or <b>pitch in</b><span class="zh">一起帮忙</span> so that nothing is left undone and neither of you feels <b>overwhelmed</b><span class="zh">不堪重负的</span>.</div><div class="breakdown"><div class="piece"><b>Cohesive device:</b> Last but not least</div><div class="piece point"><b>Point:</b> swap chores or pitch in</div><div class="piece link"><b>Conjunction:</b> so that</div><div class="piece elab"><b>Elaboration:</b> nothing is left undone; neither person feels overwhelmed</div></div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="21. Ending" data-notes="Keep the ending short. Use Name as the student placeholder.">
+  <div class="headline"><div class="badge">21</div><div><h2>Build the Ending</h2><p>Ask for a reply and sign off.</p></div><div class="tag">Keep it short</div></div>
+  <div class="starter-list">
+    <div class="starter-row"><div class="starter-card"><div class="small-label">Final sentence</div><div class="starter">I hope <span class="ellipsis">...</span></div><div class="clues"><span class="clue">reply 回复</span><span class="clue">soon 很快</span></div></div><div class="sentence-right"><button class="reveal-btn" onclick="reveal('e2-end1')">Reveal Final Sentence</button><div class="model" id="e2-end1">I hope you can reply soon.</div></div></div>
+    <div class="starter-row"><div class="starter-card"><div class="small-label">Sign-off</div><div class="starter">Love,<br><span class="ellipsis">...</span></div></div><div class="sentence-right"><button class="reveal-btn" onclick="reveal('e2-end2')">Reveal Sign-off</button><div class="model" id="e2-end2">Love,<br><b>Name</b></div></div></div>
+  </div><div class="callout">Use <strong>Name</strong> as the student placeholder.</div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="22. Vocabulary" data-notes="Focus on useful vocabulary and genuine phrasal verbs/idioms. Chinese support is attached to vocabulary, not whole ordinary clauses.">
+  <div class="headline"><div class="badge">22</div><div><h2>Vocabulary Toolkit</h2><p>Useful vocabulary, phrasal verbs and idioms.</p></div><div class="tag">English + 中文</div></div>
+  <div class="vocab-grid"><div class="word"><b>household jobs</b> — 家务</div><div class="word"><b>chores</b> — 家务杂事</div><div class="word"><b>divide</b> — 分配</div><div class="word"><b>the lion's share</b> — 大部分工作</div><div class="word"><b>pull your weight</b> — 尽自己的本分</div><div class="word"><b>draw up a timetable</b> — 拟定时间表</div><div class="word"><b>take turns</b> — 轮流</div><div class="word"><b>tied up</b> — 忙得脱不开身</div><div class="word"><b>pitch in</b> — 一起帮忙</div><div class="word"><b>overwhelmed</b> — 不堪重负的</div></div>
+  <div class="callout">Chinese support is for useful vocabulary and real fixed expressions — not for translating every clause.</div>
+  <div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="23. Full Model Email" data-notes="Final reveal only. Pupils should improve their own draft before comparing it with the complete model.">
+  <div class="headline"><div class="badge">23</div><div><h2>Check the Full Model Email</h2><p>Reveal only after pupils finish their own version.</p></div><div class="tag">Final check</div></div>
+  <div class="grid2">
+    <div class="card"><h3>Before revealing</h3><div class="checklist">
+      <div class="check">✓ Do I have the fixed three-sentence opening?</div>
+      <div class="check">✓ Did I answer all three content points?</div>
+      <div class="check">✓ Do I have exactly three body sentences?</div>
+      <div class="check">✓ Does every body sentence have an elaboration?</div>
+      <div class="check">✓ Did I use To begin with, Not only that, and Last but not least?</div>
+      <div class="check">✓ Did I finish with Love, Name?</div>
+    </div><div class="callout">Write first. Compare later.</div></div>
+    <div class="card reveal-zone"><h3>Complete answer</h3><button class="reveal-btn" onclick="reveal('e2-full')">Reveal Full Email</button>
+      <div class="hidden-all" id="e2-full"><div class="email-paper">
+        <p>Dear Ben,</p>
+        <p>Hey, how have you been lately? I didn&#x27;t know that you and your sister keep <b>arguing</b><span class="zh">争吵</span> about how to share the <b>household</b><span class="zh">家庭的</span> jobs. Well, I will share some suggestions with you.</p>
+        <p>To begin with, you could divide the chores fairly because both of you should <b>pull your weight</b><span class="zh">尽自己的本分</span> instead of leaving one person to do <b>the lion's share</b><span class="zh">大部分工作</span>. Not only that, <b>draw up</b><span class="zh">拟定</span> a weekly timetable and <b>take turns</b><span class="zh">轮流</span> doing the less popular chores so that both of you know exactly what needs to be done. Last but not least, if one of you is <b>tied up</b><span class="zh">忙得脱不开身</span>, simply swap chores or <b>pitch in</b><span class="zh">一起帮忙</span> so that nothing is left undone and neither of you feels <b>overwhelmed</b><span class="zh">不堪重负的</span>.</p>
+        <p>I hope you can reply soon.</p>
+        <p>Love,<br>Name</p>
+      </div></div>
+    </div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="24. Email 3 — Restaurant Recommendation" data-notes="Section divider. Use Next to begin this email task.">
+  <div class="section-hero"><div class="hero-kicker">FORM 3 · EMAIL 3</div><h2>Email 3 — Restaurant Recommendation</h2><p>In about 80 words, write a message to Hana, describing the food and service at the restaurant and explaining whether it would suit a family dinner.</p><div class="hero-chips"><span>Opening</span><span>3 body sentences</span><span>Vocabulary</span><span>Final model</span></div></div>
+</section>
+<section class="screen" data-title="25. Read the Question" data-notes="Read the message first. Ask pupils to identify the three content points before discussing any model answer.">
+  <div class="headline"><div class="badge">25</div><div><h2>Email 3 — Restaurant Recommendation</h2><p>Read first. Find the three things you must answer.</p></div><div class="tag">No model yet</div></div>
+  <div class="grid-prompt">
+    <div class="card"><h3>Hana's message</h3><div class="task-email"><p>Hi,</p><p>My cousins are visiting this weekend. I remember you tried a new restaurant recently. What was the food like, how was the service, and would it be suitable for a family dinner? Please tell me why.</p><p>Hana</p></div><div class="focus"><h4>Writing task</h4><p>In about 80 words, write a message to Hana, describing the food and service at the restaurant and explaining whether it would suit a family dinner.</p></div></div>
+    <div class="card"><h3>Find the 3 content points</h3><div class="talk-list">
+      <div class="talk"><strong>1.</strong> Food</div><div class="talk"><strong>2.</strong> Service</div><div class="talk"><strong>3.</strong> Suitable?</div>
+    </div><div class="callout">Do not write the full email yet. Plan the three answers first.</div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="26. Plan the Ideas" data-notes="Let pupils suggest their own ideas first. Use these model ideas only after discussion.">
+  <div class="headline"><div class="badge">26</div><div><h2>Plan the Three Ideas</h2><p>One body sentence for each content point.</p></div><div class="tag">3 ideas</div></div>
+  <div class="grid3"><div class="card tint"><h3>Food</h3>
+        <p><b>Fresh, flavourful and generous portions</b></p><p class="muted-text">enjoyable without being too heavy</p></div><div class="card warm"><h3>Service</h3>
+        <p><b>Friendly and patient staff</b></p><p class="muted-text">explain ingredients clearly</p></div><div class="card rose"><h3>Suitable?</h3>
+        <p><b>Yes — calm atmosphere + reasonable price</b></p><p class="muted-text">good fit for a family dinner</p></div></div>
+  <div class="callout">Paragraph 2 will have exactly <strong>three complete sentences</strong>: one sentence for each content point.</div>
+  <div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="27. Email Map" data-notes="Teach the fixed email format. Paragraph 2 contains exactly three complete sentences.">
+  <div class="headline"><div class="badge">27</div><div><h2>Use Our Fixed Email Structure</h2><p>Opening → 3 body sentences → short ending.</p></div><div class="tag">Fixed structure</div></div>
+  <div class="grid2">
+    <div class="card"><h3>Paragraph 1 — Opening</h3><div class="prompt-box">Dear Name,<br><br>Hey, how <span class="ellipsis">...</span><br><br>I didn't know that <span class="ellipsis">...</span><br><br>Well, I will <span class="ellipsis">...</span></div></div>
+    <div class="card"><h3>Paragraph 2 — Three ideas</h3><div class="prompt-box">To begin with, <span class="ellipsis">...</span><br><br>Not only that, <span class="ellipsis">...</span><br><br>Last but not least, <span class="ellipsis">...</span></div></div>
+    <div class="card"><h3>Paragraph 3 — Ending</h3><div class="prompt-box">I hope <span class="ellipsis">...</span><br><br>Love,<br>Name</div></div>
+    <div class="card warm"><h3>Body sentence rule</h3><div class="formula"><div><b>Cohesive device</b><br><span class="zh blue">衔接词</span></div><div class="arrow">+</div><div><b>Point</b><br><span class="zh gold">要点</span></div><div class="arrow">+</div><div><b>Conjunction + elaboration</b><br><span class="zh">连词＋扩展</span></div></div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="28. Build the Opening" data-notes="Reveal one sentence only after pupils attempt the starter. Keep the same fixed opening pattern used in previous Form 3 email decks.">
+  <div class="headline"><div class="badge">28</div><div><h2>Build Paragraph 1: Opening</h2><p>Friendly greeting → adapt the situation → offer help.</p></div><div class="tag">3 sentences</div></div>
+  <div class="starter-list">
+    <div class="starter-row"><div class="starter-card"><div class="small-label">Sentence 1</div><div class="starter">Hey, how <span class="ellipsis">...</span></div><div class="clues"><span class="clue">have you been</span><span class="clue">lately 最近</span></div></div><div class="sentence-right"><button class="reveal-btn" onclick="reveal('e3-open1')">Reveal Model Sentence</button><div class="model" id="e3-open1">Hey, how have you been lately?</div></div></div>
+    <div class="starter-row"><div class="starter-card"><div class="small-label">Sentence 2 — Adapt the question</div><div class="starter">I didn't know that <span class="ellipsis">...</span></div><div class="clues"><span class="clue">cousins 堂／表兄弟姐妹</span><span class="clue">visiting 来访</span><span class="clue">family dinner 家庭聚餐</span></div></div><div class="sentence-right"><button class="reveal-btn" onclick="reveal('e3-open2')">Reveal Model Sentence</button><div class="model" id="e3-open2">I didn&#x27;t know that your <b>cousins</b><span class="zh">堂／表兄弟姐妹</span> are <b>visiting</b><span class="zh">来访</span> this weekend and that you are looking for a place for a <b>family dinner</b><span class="zh">家庭聚餐</span>.</div></div></div>
+    <div class="starter-row"><div class="starter-card"><div class="small-label">Sentence 3 — Offer help</div><div class="starter">Well, I will <span class="ellipsis">...</span></div><div class="clues"><span class="clue">share 分享</span><span class="clue">suggestions 建议</span></div></div><div class="sentence-right"><button class="reveal-btn" onclick="reveal('e3-open3')">Reveal Model Sentence</button><div class="model" id="e3-open3">Well, I will share some suggestions with you.</div></div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="29. Body Sentence 1" data-notes="Let pupils complete the starter first. Reveal the model only after they have attempted a full sentence. Then identify connector, point, conjunction and elaboration.">
+  <div class="headline"><div class="badge">29</div><div><h2>Paragraph 2: Sentence 1</h2><p>Answer one content point and extend it.</p></div><div class="tag">Point 1 + elaboration</div></div>
+  <div class="grid-prompt">
+    <div class="card"><h3>Think and write</h3><div class="prompt-box">To begin with, the food was ... because ...</div><div class="clues"><span class="clue">flavourful 味道丰富的</span><span class="clue">cooked to perfection 恰到好处</span><span class="clue">generous portions 份量充足</span></div><div class="talk-list" style="margin-top:14px"><div class="talk"><strong>Point:</strong> fresh and flavourful</div><div class="talk"><strong>Elaboration:</strong> noodles cooked to perfection; generous portions</div></div></div>
+    <div class="card reveal-zone"><h3>Reveal after pupils write</h3><button class="reveal-btn" onclick="reveal('e3-body1')">Reveal Model Sentence</button><div class="model" id="e3-body1">To begin with, the food was <b>fresh</b><span class="zh">新鲜的</span> and <b>flavourful</b><span class="zh">味道丰富的</span> because the noodles were <b>cooked to perfection</b><span class="zh">煮得恰到好处</span> and the portions were <b>generous</b><span class="zh">份量充足的</span>.</div><div class="breakdown"><div class="piece"><b>Cohesive device:</b> To begin with</div><div class="piece point"><b>Point:</b> fresh and flavourful</div><div class="piece link"><b>Conjunction:</b> because</div><div class="piece elab"><b>Elaboration:</b> noodles cooked to perfection; generous portions</div></div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="30. Body Sentence 2" data-notes="Let pupils complete the starter first. Reveal the model only after they have attempted a full sentence. Then identify connector, point, conjunction and elaboration.">
+  <div class="headline"><div class="badge">30</div><div><h2>Paragraph 2: Sentence 2</h2><p>Answer one content point and extend it.</p></div><div class="tag">Point 2 + elaboration</div></div>
+  <div class="grid-prompt">
+    <div class="card"><h3>Think and write</h3><div class="prompt-box">Not only that, the staff were ... so ...</div><div class="clues"><span class="clue">go out of one's way 特别尽力</span><span class="clue">patiently 有耐心地</span><span class="clue">ingredients 食材／成分</span></div><div class="talk-list" style="margin-top:14px"><div class="talk"><strong>Point:</strong> went out of their way to help</div><div class="talk"><strong>Elaboration:</strong> patiently explained the ingredients</div></div></div>
+    <div class="card reveal-zone"><h3>Reveal after pupils write</h3><button class="reveal-btn" onclick="reveal('e3-body2')">Reveal Model Sentence</button><div class="model" id="e3-body2">Not only that, the staff <b>went out of their way</b><span class="zh">特别尽力地帮助</span> to assist us, so they patiently explained the <b>ingredients</b><span class="zh">食材／成分</span> when my sister asked about nuts.</div><div class="breakdown"><div class="piece"><b>Cohesive device:</b> Not only that</div><div class="piece point"><b>Point:</b> went out of their way to help</div><div class="piece link"><b>Conjunction:</b> so</div><div class="piece elab"><b>Elaboration:</b> patiently explained the ingredients</div></div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="31. Body Sentence 3" data-notes="Let pupils complete the starter first. Reveal the model only after they have attempted a full sentence. Then identify connector, point, conjunction and elaboration.">
+  <div class="headline"><div class="badge">31</div><div><h2>Paragraph 2: Sentence 3</h2><p>Answer one content point and extend it.</p></div><div class="tag">Point 3 + elaboration</div></div>
+  <div class="grid-prompt">
+    <div class="card"><h3>Think and write</h3><div class="prompt-box">Last but not least, I think it would ... because ...</div><div class="clues"><span class="clue">great fit 非常合适</span><span class="clue">cosy atmosphere 温馨气氛</span><span class="clue">break the bank 花费太多</span></div><div class="talk-list" style="margin-top:14px"><div class="talk"><strong>Point:</strong> be a great fit for a family dinner</div><div class="talk"><strong>Elaboration:</strong> cosy atmosphere; meal will not break the bank</div></div></div>
+    <div class="card reveal-zone"><h3>Reveal after pupils write</h3><button class="reveal-btn" onclick="reveal('e3-body3')">Reveal Model Sentence</button><div class="model" id="e3-body3">Last but not least, I think it would be <b>a great fit</b><span class="zh">非常合适</span> for a family dinner because the <b>atmosphere</b><span class="zh">气氛</span> is <b>cosy</b><span class="zh">温馨舒适的</span> and the meal will not <b>break the bank</b><span class="zh">花费太多／花光钱</span>.</div><div class="breakdown"><div class="piece"><b>Cohesive device:</b> Last but not least</div><div class="piece point"><b>Point:</b> be a great fit for a family dinner</div><div class="piece link"><b>Conjunction:</b> because</div><div class="piece elab"><b>Elaboration:</b> cosy atmosphere; meal will not break the bank</div></div></div>
+  </div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="32. Ending" data-notes="Keep the ending short. Use Name as the student placeholder.">
+  <div class="headline"><div class="badge">32</div><div><h2>Build the Ending</h2><p>Ask for a reply and sign off.</p></div><div class="tag">Keep it short</div></div>
+  <div class="starter-list">
+    <div class="starter-row"><div class="starter-card"><div class="small-label">Final sentence</div><div class="starter">I hope <span class="ellipsis">...</span></div><div class="clues"><span class="clue">reply 回复</span><span class="clue">soon 很快</span></div></div><div class="sentence-right"><button class="reveal-btn" onclick="reveal('e3-end1')">Reveal Final Sentence</button><div class="model" id="e3-end1">I hope you can reply soon.</div></div></div>
+    <div class="starter-row"><div class="starter-card"><div class="small-label">Sign-off</div><div class="starter">Love,<br><span class="ellipsis">...</span></div></div><div class="sentence-right"><button class="reveal-btn" onclick="reveal('e3-end2')">Reveal Sign-off</button><div class="model" id="e3-end2">Love,<br><b>Name</b></div></div></div>
+  </div><div class="callout">Use <strong>Name</strong> as the student placeholder.</div><div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="33. Vocabulary" data-notes="Focus on useful vocabulary and genuine phrasal verbs/idioms. Chinese support is attached to vocabulary, not whole ordinary clauses.">
+  <div class="headline"><div class="badge">33</div><div><h2>Vocabulary Toolkit</h2><p>Useful vocabulary, phrasal verbs and idioms.</p></div><div class="tag">English + 中文</div></div>
+  <div class="vocab-grid"><div class="word"><b>fresh</b> — 新鲜的</div><div class="word"><b>flavourful</b> — 味道丰富的</div><div class="word"><b>cooked to perfection</b> — 烹煮得恰到好处</div><div class="word"><b>generous</b> — 充足的</div><div class="word"><b>go out of one's way</b> — 特别尽力去做</div><div class="word"><b>patient</b> — 有耐心的</div><div class="word"><b>ingredients</b> — 食材／成分</div><div class="word"><b>cosy atmosphere</b> — 温馨舒适的气氛</div><div class="word"><b>a great fit</b> — 非常合适</div><div class="word"><b>break the bank</b> — 花费太多／花光钱</div></div>
+  <div class="callout">Chinese support is for useful vocabulary and real fixed expressions — not for translating every clause.</div>
+  <div class="bottom-line"></div>
+</section>
+<section class="screen" data-title="34. Full Model Email" data-notes="Final reveal only. Pupils should improve their own draft before comparing it with the complete model.">
+  <div class="headline"><div class="badge">34</div><div><h2>Check the Full Model Email</h2><p>Reveal only after pupils finish their own version.</p></div><div class="tag">Final check</div></div>
+  <div class="grid2">
+    <div class="card"><h3>Before revealing</h3><div class="checklist">
+      <div class="check">✓ Do I have the fixed three-sentence opening?</div>
+      <div class="check">✓ Did I answer all three content points?</div>
+      <div class="check">✓ Do I have exactly three body sentences?</div>
+      <div class="check">✓ Does every body sentence have an elaboration?</div>
+      <div class="check">✓ Did I use To begin with, Not only that, and Last but not least?</div>
+      <div class="check">✓ Did I finish with Love, Name?</div>
+    </div><div class="callout">Write first. Compare later.</div></div>
+    <div class="card reveal-zone"><h3>Complete answer</h3><button class="reveal-btn" onclick="reveal('e3-full')">Reveal Full Email</button>
+      <div class="hidden-all" id="e3-full"><div class="email-paper">
+        <p>Dear Hana,</p>
+        <p>Hey, how have you been lately? I didn&#x27;t know that your <b>cousins</b><span class="zh">堂／表兄弟姐妹</span> are <b>visiting</b><span class="zh">来访</span> this weekend and that you are looking for a place for a <b>family dinner</b><span class="zh">家庭聚餐</span>. Well, I will share some suggestions with you.</p>
+        <p>To begin with, the food was <b>fresh</b><span class="zh">新鲜的</span> and <b>flavourful</b><span class="zh">味道丰富的</span> because the noodles were <b>cooked to perfection</b><span class="zh">煮得恰到好处</span> and the portions were <b>generous</b><span class="zh">份量充足的</span>. Not only that, the staff <b>went out of their way</b><span class="zh">特别尽力地帮助</span> to assist us, so they patiently explained the <b>ingredients</b><span class="zh">食材／成分</span> when my sister asked about nuts. Last but not least, I think it would be <b>a great fit</b><span class="zh">非常合适</span> for a family dinner because the <b>atmosphere</b><span class="zh">气氛</span> is <b>cosy</b><span class="zh">温馨舒适的</span> and the meal will not <b>break the bank</b><span class="zh">花费太多／花光钱</span>.</p>
+        <p>I hope you can reply soon.</p>
+        <p>Love,<br>Name</p>
+      </div></div>
+    </div>
+  </div><div class="bottom-line"></div>
+</section>
+    </div></section>
+  </main>
+</div>
+<div class="modal" id="modal"><div class="modal-card"><button class="close" id="closeNotes">✕</button><h3>Teacher Notes</h3><p id="notesText"></p></div></div>
+<script>
+const screens=[...document.querySelectorAll('.screen')],nav=document.getElementById('nav'),stage=document.getElementById('stage'),modal=document.getElementById('modal');
+let current=0,zoom=1;
+screens.forEach((s,i)=>{const b=document.createElement('button');b.className='nav-item'+(i===0?' active':'');b.innerHTML=`<span class="nav-no">${i+1}</span><span class="nav-text">${s.dataset.title}</span>`;b.onclick=()=>go(i);nav.appendChild(b)});
+function go(i){current=Math.max(0,Math.min(screens.length-1,i));screens.forEach((s,k)=>s.classList.toggle('active',k===current));[...nav.children].forEach((b,k)=>b.classList.toggle('active',k===current));document.getElementById('notesText').textContent=screens[current].dataset.notes||'';stage.scrollTo({left:0,top:0,behavior:'auto'});window.scrollTo({top:0,behavior:'auto'});}
+let textScale=1,pinchStartDistance=0,pinchStartZoom=1,pinchAnchorX=0,pinchAnchorY=0;
+function reveal(id){
+  const model=document.getElementById(id);if(!model)return;
+  const open=!model.classList.contains('show');model.classList.toggle('show',open);
+  const breakdown=model.nextElementSibling;
+  if(breakdown?.classList.contains('breakdown'))breakdown.classList.toggle('show',open);
+}
+function setZoom(v,anchorX=null,anchorY=null){
+  const old=zoom;zoom=Math.max(.65,Math.min(2.4,v));
+  stage.style.setProperty('--zoom',zoom);
+  if(anchorX!==null&&anchorY!==null&&old>0){
+    const contentX=(stage.scrollLeft+anchorX)/old,contentY=(stage.scrollTop+anchorY)/old;
+    stage.scrollLeft=contentX*zoom-anchorX;stage.scrollTop=contentY*zoom-anchorY;
+  }
+}
+function setTextScale(v){textScale=Math.max(.82,Math.min(1.55,v));document.documentElement.style.setProperty('--textScale',textScale.toFixed(2));}
+function touchDistance(a,b){return Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)}
+function jumpToTitle(prefix){const i=screens.findIndex(s=>s.dataset.title.startsWith(prefix));if(i>=0)go(i)}
+document.getElementById('prevBtn').onclick=()=>go(current-1);document.getElementById('nextBtn').onclick=()=>go(current+1);
+document.getElementById('zoomIn').onclick=()=>setTextScale(textScale+.08);document.getElementById('zoomOut').onclick=()=>setTextScale(textScale-.08);
+stage.addEventListener('touchstart',e=>{
+  if(e.touches.length===2){
+    pinchStartDistance=touchDistance(e.touches[0],e.touches[1]);pinchStartZoom=zoom;
+    const r=stage.getBoundingClientRect();pinchAnchorX=((e.touches[0].clientX+e.touches[1].clientX)/2)-r.left;pinchAnchorY=((e.touches[0].clientY+e.touches[1].clientY)/2)-r.top;
+  }
+},{passive:true});
+stage.addEventListener('touchmove',e=>{
+  if(e.touches.length===2&&pinchStartDistance>0){e.preventDefault();const d=touchDistance(e.touches[0],e.touches[1]);setZoom(pinchStartZoom*(d/pinchStartDistance),pinchAnchorX,pinchAnchorY)}
+},{passive:false});
+stage.addEventListener('touchend',e=>{if(e.touches.length<2)pinchStartDistance=0},{passive:true});
+stage.addEventListener('touchcancel',()=>{pinchStartDistance=0},{passive:true});
+document.getElementById('fullBtn').onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch{document.body.classList.toggle('presentation')}};
+document.getElementById('notesBtn').onclick=()=>modal.classList.add('show');document.getElementById('closeNotes').onclick=()=>modal.classList.remove('show');modal.onclick=e=>{if(e.target===modal)modal.classList.remove('show')};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(current+1);if(e.key==='ArrowLeft')go(current-1);if(e.key==='Escape')modal.classList.remove('show')});
+go(0);setZoom(1);setTextScale(1);
+</script>
+</body></html>
