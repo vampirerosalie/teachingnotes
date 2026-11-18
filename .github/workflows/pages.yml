@@ -20,6 +20,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check JavaScript
         run: npm run check
+      - name: Test iPad finger and Pencil annotations on current deck formats
+        run: |
+          npm ci --no-audit --no-fund --ignore-scripts --silent
+          npm run test:annotations
       - name: Add Form 3 January practice PDF and listening audio
         run: |
           python3 -m pip install --quiet gdown==5.2.0
