@@ -1,4 +1,6 @@
 export const materials = [
+ {id:'f3-bi-jan-practice',level:'Form 3',subject:'BI',month:1,title:'English Units 1–2 · Complete Practice PDF',file:'f3-bi-units1-2-complete.pdf',type:'pdf',original:'English Form 3 - Units 1 and 2 - Complete Practice.pdf',detail:'45-page practice booklet · Original PDF with reading, grammar, writing and listening tasks'},
+ {id:'f3-bi-jan-listening',level:'Form 3',subject:'BI',month:1,title:'English Units 1–2 · Listening Audio',file:'f3-bi-units1-2-listening.mp3',type:'audio',original:'English Form 3 - Units 1 and 2 - Listening.mp3',detail:'Full listening MP3 · Play directly from the January library'},
  {id:'f3-bi-email-writing-jan',level:'Form 3',subject:'BI',month:1,title:'Email Writing',file:'f3-bi-email-writing-january-v4.html',type:'html',original:'Email_Writing_F3_January.html',detail:'Form 3 · 3 email tasks · sentence-by-sentence interactive writing deck'},
  {id:'f3-bi-jan-units12',level:'Form 3',subject:'BI',month:1,title:'English · Units 1–2 · Interactive Teaching Deck',file:'f3-bi-units1-2-january.html',type:'html',original:'F3 Units 1–2 Interactive Teaching Deck.html',detail:'Form 3 · Units 1–2 · Reading, grammar, listening & vocabulary · iPad interactive deck'},
  {id:'f1-bi',level:'Form 1',subject:'BI',month:11,title:'English · November booklet',file:'f1-english.pdf',type:'pdf',original:'11 BI F1.pdf'},
