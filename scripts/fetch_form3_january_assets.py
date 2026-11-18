@@ -1,4 +1,4 @@
-"""Fetch user-shared Form 3 English January materials for GitHub Pages.
+"""Fetch user-shared Form 3 English PDF and audio materials for GitHub Pages.
 
 These Google Drive files have been shared by the owner as anyone-with-link readers.
 Downloads are verified against expected file sizes so broken HTML/Drive
@@ -22,6 +22,12 @@ ASSETS = (
         Path("dist/assets/materials/f3-bi-units1-2-listening.mp3"),
         19_446_380,
         None,
+    ),
+    (
+        "1m4wvtzLJEy0cCfDbEdkMsuQ9B8YUO4D8",
+        Path("dist/assets/materials/f3-bi-september-2026-no-cover.pdf"),
+        126_270,
+        b"%PDF-",
     ),
 )
 
