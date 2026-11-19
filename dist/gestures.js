@@ -29,7 +29,7 @@ export class TouchNavigator {
       this.points.clear(); this.mode=null; this.velocity=[0,0];
       return;
     }
-    if (e.pointerType !== 'touch' || e.target?.closest?.('button,input,select,a')) return;
+    if (e.pointerType !== 'touch' || e.target?.closest?.('button,input,select,a,textarea,[contenteditable],.typing-note')) return;
     // A new contact must not inherit a stale palm ID after a missed touch-end.
     this.ignoredTouches.delete(e.pointerId);
     if (this.options.isPenActive()) {
