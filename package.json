@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "check": "node --check dist/app.js && node --check dist/ink.js && node --check dist/materials.js && node --check dist/pdf-reader.js && node --check dist/gestures.js && node --check dist/reading-mode.js && node --check dist/password.js && node --check dist/selection-guard.js && node --check dist/deck-annotations.js",
+    "check": "node --check dist/app.js && node --check dist/ink.js && node --check dist/materials.js && node --check dist/pdf-reader.js && node --check dist/gestures.js && node --check dist/reading-mode.js && node --check dist/password.js && node --check dist/selection-guard.js && node --check dist/deck-annotations.js && node --check dist/text-notes.js",
     "test": "node tests/library.test.mjs && node tests/ink.test.mjs && node tests/ink-regressions.test.mjs && node tests/reader.test.mjs && node tests/interaction.test.mjs && node tests/decks.test.mjs && node tests/pdfs.test.mjs",
-    "test:annotations": "node tests/annotation-current.test.mjs"
+    "test:annotations": "node tests/annotation-current.test.mjs && node tests/text-notes.test.mjs && node tests/ink.test.mjs && node tests/ink-regressions.test.mjs && node tests/interaction.test.mjs"
   },
   "devDependencies": {
     "jsdom": "^26.1.0"
