@@ -10,7 +10,7 @@ export class TextNotes {
     if(!this.doc.getElementById('teaching-text-notes-css')){
       const style=this.doc.createElement('style');
       style.id='teaching-text-notes-css';
-      style.textContent="\n.typing-layer,.typing-layer *{box-sizing:border-box}\n.typing-note{position:absolute;z-index:1;color:var(--typing-color,#25334a);\n  font-family:Arial,\"Noto Sans SC\",\"Microsoft YaHei\",sans-serif;line-height:1.25;\n  border:1px solid transparent;border-radius:8px;min-height:20px;\n  background:transparent;overflow:visible;pointer-events:none}\n.typing-note-editor{display:block;box-sizing:border-box;width:100%;min-width:0;min-height:1.65em;\n  margin:0;padding:4px 7px;border:0;outline:0;overflow:hidden;resize:none;\n  background:transparent;color:inherit;font:inherit;line-height:1.25;\n  white-space:pre-wrap;overflow-wrap:anywhere;-webkit-user-select:text!important;\n  user-select:text!important;-webkit-touch-callout:default!important}\n.typing-layer.is-typing .typing-note{pointer-events:auto;\n  border-color:rgba(112,77,133,.68);background:rgba(255,253,249,.96);\n  box-shadow:0 2px 9px rgba(23,27,47,.14)}\n.typing-layer:not(.is-typing) .typing-note-editor{pointer-events:none}\n.typing-note-top{display:none;justify-content:space-between;align-items:center;\n  height:29px;padding:1px 3px;background:rgba(94,69,121,.1);\n  border-radius:7px 7px 0 0}\n.typing-layer.is-typing .typing-note-top{display:flex}\n.typing-note-drag,.typing-note-delete,.typing-note-resize{\n  display:grid;place-items:center;background:#f1edfa;color:#49355f;\n  font:700 13px/1.1 Arial,sans-serif;border:1px solid #bcafd0;\n  border-radius:5px;min-width:28px;min-height:26px;\n  touch-action:none;-webkit-user-select:none!important;user-select:none!important;\n  -webkit-touch-callout:none;cursor:grab}\n.typing-note-drag{padding:3px 11px}\n.typing-note-delete{font-size:20px;background:#fff1f1;color:#922d4c}\n.typing-note-resize{display:none;position:absolute;right:-5px;bottom:-6px;\n  width:34px;height:34px;font-size:19px;cursor:nwse-resize;background:#e9dcfa;\n  box-shadow:0 1px 6px #0002}\n.typing-layer.is-typing .typing-note-resize{display:grid}\n.typing-note:focus-within{box-shadow:0 0 0 2px #a48acb,0 2px 9px #0002!important}\n";
+      style.textContent="\n/* Instagram-style annotations: no white card behind typed words. */\n.typing-layer,.typing-layer *{box-sizing:border-box}\n.typing-note{position:absolute;z-index:1;color:var(--typing-color,#25334a);\n font-family:Arial,\"Noto Sans SC\",\"Microsoft YaHei\",sans-serif;line-height:1.24;\n border:0!important;outline:0;background:transparent!important;box-shadow:none!important;\n min-width:0;min-height:0;overflow:visible;pointer-events:none}\n.typing-note-editor{display:block;box-sizing:border-box;width:100%;min-width:0;min-height:1.24em;\n margin:0;padding:0 2px;border:0!important;outline:0;overflow:hidden;resize:none;\n background:transparent!important;box-shadow:none!important;color:inherit;\n font:inherit;line-height:1.24;white-space:pre-wrap;overflow-wrap:anywhere;\n -webkit-user-select:text!important;user-select:text!important;\n -webkit-touch-callout:default!important;caret-color:var(--typing-color,#25334a)}\n.typing-note-editor::placeholder{color:rgba(92,68,115,.58);font-size:.7em}\n.typing-layer.is-typing .typing-note{pointer-events:auto;background:transparent!important;\n border:0!important;box-shadow:none!important}\n.typing-layer:not(.is-typing) .typing-note-editor{pointer-events:none}\n.typing-layer:not(.is-typing) .typing-note-editor::placeholder{color:transparent}\n.typing-note-top{display:none;position:absolute;left:0;bottom:calc(100% + 4px);\n width:max-content;min-width:0;height:29px;padding:0;\n align-items:center;gap:5px;background:transparent!important;border:0;box-shadow:none}\n.typing-layer.is-typing .typing-note.selected .typing-note-top{display:flex}\n.typing-note-drag,.typing-note-delete,.typing-note-resize{\n display:grid;place-items:center;background:rgba(241,237,250,.92);color:#49355f;\n font:700 13px/1.1 Arial,sans-serif;border:1px solid rgba(188,175,208,.85);\n border-radius:6px;min-width:28px;min-height:27px;padding:2px 5px;\n touch-action:none;-webkit-user-select:none!important;user-select:none!important;\n -webkit-touch-callout:none;cursor:grab}\n.typing-note-drag{padding:2px 8px}\n.typing-note-delete{font-size:20px;background:rgba(255,241,241,.92);color:#922d4c}\n.typing-note-resize{display:none;position:absolute;right:-13px;bottom:-14px;\n width:32px;height:32px;font-size:18px;cursor:nwse-resize;\n background:rgba(233,220,250,.92);box-shadow:0 1px 5px #0002}\n.typing-layer.is-typing .typing-note.selected .typing-note-resize{display:grid}\n.typing-layer.is-typing .typing-note:focus-within .typing-note-editor{\n outline:1px dashed rgba(114,76,145,.43);outline-offset:1px}\n";
       this.doc.head.append(style);
     }
     this.notes=[];this.nextId=1;this.pending=null;this.editing=null;this.elements=new Map();
@@ -23,6 +23,10 @@ export class TextNotes {
     });
     if(this.win.getComputedStyle(target).position==='static')target.style.position='relative';
     target.append(this.root);
+    this.sizer=this.doc.createElement('span');
+    Object.assign(this.sizer.style,{position:'absolute',visibility:'hidden',pointerEvents:'none',
+      whiteSpace:'pre',left:'-99999px',top:'0',display:'inline-block'});
+    this.root.append(this.sizer);
     this.listeners=[];
     this.on=(node,name,fn,options=false)=>{
       node.addEventListener(name,fn,options);
@@ -54,7 +58,7 @@ export class TextNotes {
   defaultPoint(clientX,clientY){
     const r=this.target.getBoundingClientRect();
     return {
-      x:clamp((clientX-r.left)/Math.max(1,r.width)*1000,0,985),
+      x:clamp((clientX-r.left)/Math.max(1,r.width)*1000,0,920),
       y:clamp((clientY-r.top)/Math.max(1,r.height)*1000,0,950)
     };
   }
@@ -62,11 +66,11 @@ export class TextNotes {
     if(this.settings().tool!=='text')return null;
     const before=this.snapshot();
     const p=this.defaultPoint(clientX,clientY);
-    const width=clamp(280,140,1000-p.x);
-    const note={id:this.nextId++,x:clamp(p.x,0,1000-width),y:p.y,width,
+    const note={id:this.nextId++,x:p.x,y:p.y,width:0,
       fontSize:27,text:'',color:this.settings().color||'#273044'};
     this.notes.push(note);
     this.mount(note);
+    this.select(note.id);
     this.save(before);
     const entry=this.elements.get(note.id);
     if(focus&&entry?.input){
@@ -90,7 +94,7 @@ export class TextNotes {
     remove.textContent='×';
     top.append(move,remove);
     const input=this.doc.createElement('textarea');
-    input.className='typing-note-editor';input.rows=2;input.spellcheck=true;
+    input.className='typing-note-editor';input.rows=1;input.spellcheck=true;
     input.setAttribute('aria-label','Type your lesson annotation');
     input.placeholder='Tap here to type…';
     input.value=note.text;
@@ -109,12 +113,13 @@ export class TextNotes {
       this.remove(note.id);
     });
     this.on(input,'focus',()=>{
+      this.select(note.id);
       this.editing={id:note.id,before:this.snapshot(),original:note.text};
       el.classList.add('editing');
     });
     this.on(input,'input',()=>{
       const n=this.notes.find(n=>n.id===note.id);if(!n)return;
-      n.text=input.value;this.adjustHeight(input);
+      n.text=input.value;this.apply(n);
     });
     this.on(input,'blur',()=>{
       el.classList.remove('editing');
@@ -125,22 +130,61 @@ export class TextNotes {
         if(n && n.text!==edit.original)this.save(edit.before);
       }
     });
-    this.adjustHeight(input);
+    this.apply(note);
+  }
+  // Only one note shows its small Move / Delete / Resize handles at a time.
+  // The rest remain plain, transparent text.
+  select(id){
+    for(const [key,entry] of this.elements)
+      entry.el.classList.toggle('selected',key===id);
+  }
+  // Measure the actual rendered text (including CJK glyph widths) rather
+  // than giving every note a fixed-width rectangle. offsetWidth is important:
+  // unlike getBoundingClientRect it isn't distorted by PDF/HTML zoom transforms.
+  lineWidth(line,fontPx){
+    const value=line||' ';
+    this.sizer.textContent=value;
+    this.sizer.style.font=fontPx+'px Arial, "Noto Sans SC","Microsoft YaHei",sans-serif';
+    const measured=this.sizer.offsetWidth||0;
+    if(measured>0)return measured;
+    // jsdom/headless fallback; browsers use the precise DOM measurement.
+    const em=Array.from(value).reduce((sum,ch)=>{
+      if(/[\u2e80-\u9fff\uac00-\ud7af]/u.test(ch))return sum+1;
+      if(/[ilI.,!:'\x60| ]/.test(ch))return sum+.30;
+      if(/[MW@#%&]/.test(ch))return sum+.91;
+      return sum+.59;
+    },0);
+    return em*fontPx;
   }
   apply(note){
     const entry=this.elements.get(note.id);
     if(!entry)return;
-    const width=Math.max(1,this.target.clientWidth||this.target.getBoundingClientRect().width||1000);
+    const targetWidth=Math.max(1,this.target.clientWidth||this.target.getBoundingClientRect().width||1000);
+    const fontPx=targetWidth*note.fontSize/1000;
+    const lines=String(note.text||'').replace(/\r/g,'').split('\n');
+    const naturalPx=note.text
+      ? Math.max(...lines.map(line=>this.lineWidth(line,fontPx)))+6
+      : Math.max(68,fontPx*2.7);
+    const available= Math.max(8,1000-note.x-8);
+    const minWidth=Math.min(available,(note.text?Math.max(20,fontPx*.7):68)/targetWidth*1000);
+    note.width=Math.min(available,Math.max(minWidth,naturalPx/targetWidth*1000));
     entry.el.style.left=(note.x/10)+'%';
     entry.el.style.top=(note.y/10)+'%';
     entry.el.style.width=(note.width/10)+'%';
-    entry.el.style.fontSize=(width*note.fontSize/1000)+'px';
+    entry.el.style.fontSize=fontPx+'px';
     entry.el.style.setProperty('--typing-color',note.color);
-    this.adjustHeight(entry.input);
+    this.adjustHeight(entry.input,fontPx,lines,note.width*targetWidth/1000);
   }
-  adjustHeight(input){
+  adjustHeight(input,fontPx,lines,availablePx){
     input.style.height='auto';
-    input.style.height=Math.max(38,input.scrollHeight||0)+'px';
+    // Match the number of typed lines; very long lines wrap only if they hit
+    // the edge of the lesson page. Never reserve a fixed two-row white box.
+    const textLines=lines.reduce((count,line)=>{
+      const pixelWidth=this.lineWidth(line,fontPx);
+      return count+Math.max(1,Math.ceil(pixelWidth/Math.max(1,availablePx-5)));
+    },0);
+    const minimum=fontPx*1.24*Math.max(1,textLines)+3;
+    input.style.height=Math.max(minimum,input.scrollHeight||0)+'px';
   }
   remove(id){
     const before=this.snapshot(),index=this.notes.findIndex(n=>n.id===id);
@@ -158,6 +202,7 @@ export class TextNotes {
     this.editing=null;
     const n=this.notes.find(n=>n.id===id);
     if(!n)return;
+    this.select(id);
     this.pending={id,pointerId:e.pointerId,mode,
       fromX:e.clientX,fromY:e.clientY,
       start:{...n},before:this.snapshot(),changed:false};
@@ -176,9 +221,10 @@ export class TextNotes {
       n.y=clamp(p.start.y+dy,0,960);
     }else{
       // Diagonal drag resizes the text itself, not merely an empty rectangle.
-      const factor=clamp(1+(dx+dy)*.003,.45,3.6);
+      // Instagram-style: the gesture changes font size ONLY.
+      // apply() measures the new glyph bounds and fits the box tightly.
+      const factor=clamp(1+(dx+dy)*.0035,.4,3.8);
       n.fontSize=clamp(p.start.fontSize*factor,11,96);
-      n.width=clamp(p.start.width*factor,100,1000-n.x);
     }
     p.changed=p.changed || Math.abs(n.x-p.start.x)>1 ||
       Math.abs(n.y-p.start.y)>1 || Math.abs(n.fontSize-p.start.fontSize)>.3 ||
@@ -204,6 +250,7 @@ export class TextNotes {
     this.notes=snapshot.map(n=>({...n}));
     this.nextId=Math.max(0,...this.notes.map(n=>n.id))+1;
     for(const n of this.notes)this.mount(n);
+    this.select(this.notes.at(-1)?.id);
     this.update();
     this.changed();
   }
