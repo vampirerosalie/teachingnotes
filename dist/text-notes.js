@@ -36,6 +36,15 @@ export class TextNotes {
     this.on(this.doc,'pointerup',e=>this.endGesture(e),true);
     this.on(this.doc,'pointercancel',e=>this.cancelGesture(e),true);
     this.on(this.win,'blur',()=>this.endGesture(null));
+    // PDF pages change their CSS widths on rotation. Recalculate the actual
+    // font pixel size from our normalized page-space size in that case.
+    const resize=()=>{for(const n of this.notes)this.apply(n)};
+    if(typeof this.win.ResizeObserver==='function'){
+      this.resizeObserver=new this.win.ResizeObserver(resize);
+      this.resizeObserver.observe(this.target);
+    }else{
+      this.on(this.win,'resize',resize);
+    }
     this.update();
   }
   snapshot(){
@@ -210,6 +219,7 @@ export class TextNotes {
     this.root.classList.toggle('is-typing',isText);
   }
   destroy(){
+    this.resizeObserver?.disconnect();
     this.pending=null;
     for(const [node,name,fn,opts] of this.listeners)node.removeEventListener(name,fn,opts);
     this.listeners=[];this.elements.clear();this.root.remove();
