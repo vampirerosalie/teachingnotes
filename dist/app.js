@@ -1,7 +1,7 @@
 import {materials} from './materials.js?v=3.18';
 import {InkLayer} from './ink.js?v=3.3';
 import {annotationTargets, nearestVisibleTarget} from './deck-annotations.js?v=1.0';
-import {PDFReader} from './pdf-reader.js?v=3.1';
+import {PDFReader} from './pdf-reader.js?v=3.2';
 import {readingMode} from './reading-mode.js?v=3.1';
 import {maskPassword} from './password.js?v=3.1';
 import {selectionGuard} from './selection-guard.js?v=3.1';
