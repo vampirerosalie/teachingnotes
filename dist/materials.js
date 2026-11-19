@@ -1,4 +1,5 @@
 export const materials = [
+ {id:'f2-bm-novel-2027',level:'Form 2',subject:'BM',month:1,title:'2027 BM Novel',file:'f2-bm-novel-2027.pdf',type:'pdf',original:'Meniti_Impian_Komik.pdf',detail:'Form 2 · Meniti Impian · BM novel comic PDF'},
  {id:'f3-bi-sep-2026-pdf',level:'Form 3',subject:'BI',month:9,title:'2026 九月 · PDF（无封面）',file:'f3-bi-september-2026-no-cover.pdf',type:'pdf',original:'09_F3_VER01_No_Cover.pdf',detail:'Form 3 English · September 2026 · 20-page original booklet without cover'},
  {id:'f3-bi-sep-2026',level:'Form 3',subject:'BI',month:9,title:'2026 九月',file:'f3-bi-september-2026.html',type:'html',original:'09_F3_VER01_Interactive_Teaching_Deck.html',detail:'Form 3 English · September 2026 · Interactive Reading Parts 1–5, Grammar & Vocabulary · iPad'},
  {id:'f3-sc-jan-practice-html',level:'Form 3',subject:'Science',month:1,title:'2027 Science · Chapter 1 · Interactive Practice',file:'f3-science-chapter1-practice-bilingual-v2.html',type:'html',original:'Form3_Science_Chapter1_Practice.html',detail:'Stimuli and Responses · 58 exercises · MCQ and structured questions · Answer explanations · iPad'},
