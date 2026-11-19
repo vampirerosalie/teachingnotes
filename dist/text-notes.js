@@ -6,6 +6,13 @@ export class TextNotes {
   constructor(target, settings, changed, record){
     this.target=target;this.settings=settings;this.changed=changed;this.record=record;
     this.doc=target.ownerDocument;this.win=this.doc.defaultView;
+    // HTML lessons run in an iframe: install the annotation styles there too.
+    if(!this.doc.getElementById('teaching-text-notes-css')){
+      const style=this.doc.createElement('style');
+      style.id='teaching-text-notes-css';
+      style.textContent="\n.typing-layer,.typing-layer *{box-sizing:border-box}\n.typing-note{position:absolute;z-index:1;color:var(--typing-color,#25334a);\n  font-family:Arial,\"Noto Sans SC\",\"Microsoft YaHei\",sans-serif;line-height:1.25;\n  border:1px solid transparent;border-radius:8px;min-height:20px;\n  background:transparent;overflow:visible;pointer-events:none}\n.typing-note-editor{display:block;box-sizing:border-box;width:100%;min-width:0;min-height:1.65em;\n  margin:0;padding:4px 7px;border:0;outline:0;overflow:hidden;resize:none;\n  background:transparent;color:inherit;font:inherit;line-height:1.25;\n  white-space:pre-wrap;overflow-wrap:anywhere;-webkit-user-select:text!important;\n  user-select:text!important;-webkit-touch-callout:default!important}\n.typing-layer.is-typing .typing-note{pointer-events:auto;\n  border-color:rgba(112,77,133,.68);background:rgba(255,253,249,.96);\n  box-shadow:0 2px 9px rgba(23,27,47,.14)}\n.typing-layer:not(.is-typing) .typing-note-editor{pointer-events:none}\n.typing-note-top{display:none;justify-content:space-between;align-items:center;\n  height:29px;padding:1px 3px;background:rgba(94,69,121,.1);\n  border-radius:7px 7px 0 0}\n.typing-layer.is-typing .typing-note-top{display:flex}\n.typing-note-drag,.typing-note-delete,.typing-note-resize{\n  display:grid;place-items:center;background:#f1edfa;color:#49355f;\n  font:700 13px/1.1 Arial,sans-serif;border:1px solid #bcafd0;\n  border-radius:5px;min-width:28px;min-height:26px;\n  touch-action:none;-webkit-user-select:none!important;user-select:none!important;\n  -webkit-touch-callout:none;cursor:grab}\n.typing-note-drag{padding:3px 11px}\n.typing-note-delete{font-size:20px;background:#fff1f1;color:#922d4c}\n.typing-note-resize{display:none;position:absolute;right:-5px;bottom:-6px;\n  width:34px;height:34px;font-size:19px;cursor:nwse-resize;background:#e9dcfa;\n  box-shadow:0 1px 6px #0002}\n.typing-layer.is-typing .typing-note-resize{display:grid}\n.typing-note:focus-within{box-shadow:0 0 0 2px #a48acb,0 2px 9px #0002!important}\n";
+      this.doc.head.append(style);
+    }
     this.notes=[];this.nextId=1;this.pending=null;this.editing=null;this.elements=new Map();
     this.root=this.doc.createElement('div');
     this.root.className='typing-layer';
