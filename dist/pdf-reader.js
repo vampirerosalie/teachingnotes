@@ -15,7 +15,7 @@ export class PDFReader {
     this.gestures = new TouchNavigator(surface, {
       getZoom: () => this.zoom,
       zoomAt: (z, from, to) => this.zoomAt(z, from, to),
-      canDraw: () => settings().finger && settings().tool !== 'interact',
+      canDraw: () => settings().tool === 'text' || (settings().finger && settings().tool !== 'interact'),
       cancelInk: () => this.pages.forEach(p => p.layer?.cancel()),
       isPenActive: () => this.pages.some(p => p.layer?.pointerType === 'pen' && p.layer.pointer !== null),
       settled: () => this.schedule(),
