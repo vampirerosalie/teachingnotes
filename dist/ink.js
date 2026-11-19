@@ -1,8 +1,9 @@
+import {TextNotes} from './text-notes.js?v=1.0';
 const NS = 'http://www.w3.org/2000/svg';
 export class InkLayer {
   constructor(target, settings, changed) {
     this.target = target; this.settings = settings; this.changed = changed;
-    this.strokes = []; this.history = []; this.draft = null; this.pointer = null;
+    this.strokes = []; this.history = []; this.actions=[]; this.draft = null; this.pointer = null;
     this.pointerType = null; this.path = null; this.frame = null;
     this.doc = target.ownerDocument; this.win = this.doc.defaultView;
     this.svg = this.doc.createElementNS(NS, 'svg');
@@ -18,6 +19,8 @@ export class InkLayer {
     this.svg.append(this.hit);
     if (this.win.getComputedStyle(target).position === 'static') target.style.position = 'relative';
     target.append(this.svg);
+    this.text=new TextNotes(target,()=>this.settings(),()=>this.changed?.(this),
+      before=>{this.actions.push({kind:'text',before});this.changed?.(this)});
     this.bindings = [];
     const on = (node, name, handler, options = false) => {
       node.addEventListener(name, handler, options); this.bindings.push([node, name, handler, options]);
@@ -57,6 +60,7 @@ export class InkLayer {
     try { this.svg.setPointerCapture(e.pointerId); } catch { /* document endings remain available */ }
     // Committed strokes are immutable; snapshots can share them instead of copying every point.
     this.history.push(this.strokes.slice());
+    this.actions.push({kind:'ink'});
     const point = this.point(e);
     if (s.tool === 'erase') { this.erase(point); return; }
     this.draft = {points:[point], color:s.tool === 'highlight' ? '#f5c84b' : s.color, width:s.tool === 'highlight' ? s.size*6 : s.size, opacity:s.tool === 'highlight' ? .32 : 1};
@@ -128,22 +132,48 @@ export class InkLayer {
   }
   update() {
     if (this.pointer !== null && this.strokeTool !== this.settings().tool) this.finish();
-    this.svg.style.pointerEvents=this.settings().tool==='interact'?'none':'all';
+    this.svg.style.pointerEvents=['interact','text'].includes(this.settings().tool)?'none':'all';
+    this.text.update();
   }
   cancel() {
-    if (this.pointer === null) return;
+    if (this.pointer === null) {this.text.cancelGesture();return;}
     if (this.frame !== null) this.win.cancelAnimationFrame?.(this.frame);
     this.frame=null;
     if (this.history.length) this.strokes=this.history.pop();
+    if(this.actions.at(-1)?.kind==='ink')this.actions.pop();
     const id=this.pointer; this.pointer=null; this.pointerType=null; this.draft=null; this.path=null; this.rect=null;
     try {this.svg.releasePointerCapture(id);} catch {}
     this.draw();
   }
-  undo() { this.finish(); if(this.history.length){this.strokes=this.history.pop();this.draw();} }
-  clear() { this.finish(); if(this.strokes.length){this.history.push(this.strokes.slice());this.strokes=[];this.draw();} }
+  undo() {
+    this.finish();
+    const action=this.actions.pop();
+    if(action?.kind==='text'){
+      this.text.restore(action.before);
+    }else if(action?.kind==='all'){
+      if(action.hadInk&&this.history.length)this.history.pop();
+      this.strokes=action.strokes.slice();
+      this.text.restore(action.notes);
+      this.draw();
+    }else if(action?.kind==='ink'||(!action&&this.history.length)){
+      if(this.history.length){this.strokes=this.history.pop();this.draw();}
+    }
+    this.changed?.(this);
+  }
+  clear() {
+    this.finish();
+    if(!this.strokes.length && !this.text.notes.length)return;
+    const beforeInk=this.strokes.slice(),beforeNotes=this.text.snapshot();
+    const hadInk=beforeInk.length>0;
+    if(hadInk)this.history.push(beforeInk);
+    this.actions.push({kind:'all',strokes:beforeInk,notes:beforeNotes,hadInk});
+    this.strokes=[];
+    this.text.clearSilently();
+    this.draw();
+  }
   destroy() {
     this.finish();
     for (const [node,name,handler,options] of this.bindings) node.removeEventListener(name,handler,options);
-    this.bindings=[]; this.svg.remove();
+    this.bindings=[]; this.text.destroy();this.svg.remove();
   }
 }
