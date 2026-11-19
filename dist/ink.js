@@ -1,4 +1,4 @@
-import {TextNotes} from './text-notes.js?v=1.0';
+import {TextNotes} from './text-notes.js?v=1.1';
 const NS = 'http://www.w3.org/2000/svg';
 export class InkLayer {
   constructor(target, settings, changed) {
