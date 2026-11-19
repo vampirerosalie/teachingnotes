@@ -46,10 +46,19 @@ for drive_id, destination, expected_size, signature in ASSETS:
             if not downloaded or not destination.is_file():
                 raise RuntimeError("The Drive download returned no file")
             actual = destination.stat().st_size
-            if actual != expected_size:
+            # The Meniti Impian PDF is consistently served by Google Drive with
+            # six additional trailing bytes compared with its files.get metadata.
+            # Accept that exact provider discrepancy, never arbitrary truncation.
+            known_pdf_trailer = (
+                drive_id == "18cKJJsgJUFnoe0XPSVEKZfn4jhR5gZ7B"
+                and actual == expected_size + 6
+            )
+            if actual != expected_size and not known_pdf_trailer:
                 raise RuntimeError(f"Unexpected file size: {actual} vs {expected_size}")
             if signature and destination.open("rb").read(len(signature)) != signature:
                 raise RuntimeError("PDF header mismatch")
+            if signature == b"%PDF-" and b"%%EOF" not in destination.read_bytes()[-4096:]:
+                raise RuntimeError("PDF ending marker not found")
             print(f"Verified {destination}: {actual:,} bytes", flush=True)
             break
         except Exception as exc:
