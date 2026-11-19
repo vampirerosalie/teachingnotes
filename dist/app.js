@@ -1,4 +1,4 @@
-import {materials} from './materials.js?v=3.17';
+import {materials} from './materials.js?v=3.18';
 import {InkLayer} from './ink.js?v=3.2';
 import {annotationTargets, nearestVisibleTarget} from './deck-annotations.js?v=1.0';
 import {PDFReader} from './pdf-reader.js?v=3.1';
