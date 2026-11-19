@@ -101,6 +101,47 @@ nav.destroy();
 layer.destroy();
 assert.equal(paper.querySelector('.typing-layer'),null);
 
+// Instagram-style regression: no fixed empty white rectangle around short text.
+const fitDom=new JSDOM('<div id="fit">Worksheet</div>',{pretendToBeVisual:true});
+const fitPage=fitDom.window.document.querySelector('#fit');
+fitPage.getBoundingClientRect=()=>({left:0,top:0,width:1000,height:1000});
+const fitSettings={tool:'text',color:'#ba315b',size:4,finger:true};
+const fitLayer=new InkLayer(fitPage,()=>fitSettings);
+const fit=fitLayer.text.createAt(120,220,false),fitEntry=fitLayer.text.elements.get(fit.id);
+fitEntry.input.value='祖母';
+fitEntry.input.dispatchEvent(new fitDom.window.Event('input',{bubbles:true}));
+assert.equal(fit.text,'祖母');
+assert.ok(fit.width<110,'Two Chinese characters fit tightly, without an old 280-unit box');
+assert.ok(fit.width>35,'Measured width is large enough to show two Chinese characters');
+const autoWidth=fit.width;
+const startSize=fit.fontSize;
+const innerCss=fitDom.window.document.getElementById('teaching-text-notes-css').textContent;
+assert.match(innerCss,/background:transparent!important/,'Editor and note background are fully transparent');
+assert.doesNotMatch(innerCss,/background:rgba\(255,253,249,.96\)/,'Old opaque typing card must be gone');
+assert.match(innerCss,/\.typing-note\.selected \.typing-note-top/,'Only selected text shows handles');
+const selected=fitEntry.el;
+assert.ok(selected.classList.contains('selected'),'New text is selected for dragging or resizing');
+const handle2=fitEntry.resize;
+fitLayer.text.beginGesture(ev(60,200,200,{currentTarget:handle2}),fit.id,'resize');
+fitLayer.text.moveGesture(ev(60,290,290));
+fitLayer.text.endGesture(ev(60,290,290));
+assert.ok(fit.fontSize>startSize,'Corner drag enlarges the font');
+assert.ok(fit.width>autoWidth,'Tight glyph width follows the bigger font');
+assert.ok(fit.width/autoWidth>1.3,'Resizing produces proportional glyph width growth');
+fitLayer.undo();
+assert.ok(Math.abs(fitLayer.text.notes[0].width-autoWidth)<1,
+  'Undo restores the tight auto-fit width');
+
+const more=fitLayer.text.createAt(280,370,false);
+const moreInput=fitLayer.text.elements.get(more.id).input;
+moreInput.value='第一行\nSecond line';
+moreInput.dispatchEvent(new fitDom.window.Event('input',{bubbles:true}));
+assert.ok(parseFloat(moreInput.style.height)>parseFloat(fitEntry.input.style.height),
+  'Multi-line height expands to content without reserving a blank box for short notes');
+assert.equal(fitDom.window.document.querySelectorAll('.typing-note.selected').length,1,
+  'Only one note has active Move/Delete/Resize controls');
+fitLayer.destroy();fitDom.window.close();
+
 const html=readFileSync(new URL('../dist/index.html',import.meta.url),'utf8');
 const app=readFileSync(new URL('../dist/app.js',import.meta.url),'utf8');
 const pdf=readFileSync(new URL('../dist/pdf-reader.js',import.meta.url),'utf8');
