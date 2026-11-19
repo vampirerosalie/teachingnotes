@@ -1,5 +1,5 @@
 import {materials} from './materials.js?v=3.18';
-import {InkLayer} from './ink.js?v=3.2';
+import {InkLayer} from './ink.js?v=3.3';
 import {annotationTargets, nearestVisibleTarget} from './deck-annotations.js?v=1.0';
 import {PDFReader} from './pdf-reader.js?v=3.1';
 import {readingMode} from './reading-mode.js?v=3.1';
@@ -42,10 +42,13 @@ function setTool(tool){
    badge.hidden=!drawing;
    badge.textContent=tool==='pen'?'✎ Pen · Finger or Apple Pencil':
      tool==='highlight'?'▰ Mark · Finger or Apple Pencil':
+     tool==='text'?'T Text · Tap to type, drag to move, ◢ to resize':
      '⌫ Erase · Rub across ink';
  }
  $('#toolHint').textContent=!drawing
   ? 'Move mode · Scroll, pinch and tap lesson answers normally.'
+  : tool==='text'
+   ? 'Tap the page to type. Drag ⠿ to move; drag ◢ to change text size. Choose Move to read.'
   : tool==='erase'
    ? 'Erase your pen or highlight strokes with one finger or Apple Pencil. Switch to Move for scrolling.'
    : 'Draw with one finger or Apple Pencil. Use Move to scroll and pinch the lesson.';
@@ -53,13 +56,20 @@ function setTool(tool){
 for(const b of document.querySelectorAll('[data-tool]'))b.onclick=()=>setTool(b.dataset.tool);
 $('#ink').oninput=e=>{settings.color=e.target.value};$('#penSize').onchange=e=>{settings.size=+e.target.value};$('#fingerDraw').checked=settings.finger;$('#fingerDraw').onchange=e=>{settings.finger=e.target.checked;setTool(settings.tool)};
 $('#undo').onclick=()=>active?.undo();$('#clearInk').onclick=()=>active?.clear();
-function updateUndo(){$('#undo').disabled=!active?.history.length;$('#clearInk').disabled=!active?.strokes.length}
+function updateUndo(){
+ $('#undo').disabled=!(active?.actions.length||active?.history.length);
+ $('#clearInk').disabled=!(active?.strokes.length||active?.text?.notes.length);
+}
 function attach(target,key){
  let layer=layers.get(key);
  if(!layer||!layer.svg.isConnected){
    const old=layer;
    layer=new InkLayer(target,()=>settings,changed=>{active=changed;updateUndo()});
-   if(old){layer.strokes=old.strokes;layer.history=old.history;old.destroy();layer.draw()}
+   if(old){
+     const oldNotes=old.text.snapshot();
+     layer.strokes=old.strokes;layer.history=old.history;layer.actions=old.actions;
+     old.destroy();layer.text.restore(oldNotes);layer.draw();
+   }
    layers.set(key,layer);
  }
  // Do not reset the current writing page every 120 ms (this previously made
