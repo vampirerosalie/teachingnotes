@@ -1,4 +1,5 @@
 export const materials = [
+ {id:'y6-bi-feb-2027-unit2',level:'Year 6',subject:'BI',month:2,title:'2027 English · Unit 2 · Life in the past',file:'year6-english-2027-unit2.pdf',type:'pdf',original:'2027 Year 6 English - Unit 2 Life in the past.pdf',detail:'February 2027 · Illustrated notes, practice, UASA, spelling list and answers · 35 pages'},
  {id:'y6-bi-jan-2027-welcome-unit1',level:'Year 6',subject:'BI',month:1,title:'2027 English · Welcome Unit + Unit 1',file:'year6-english-2027-welcome-unit1.pdf',type:'pdf',original:'2027 Year 6 English - Welcome Unit + Unit 1.pdf',detail:'January 2027 · Illustrated notes, practice, UASA, spelling list and answers · 48 pages'},
  {id:'f2-bm-novel-2027',level:'Form 2',subject:'BM',month:1,title:'2027 BM Novel',file:'f2-bm-novel-2027.pdf',type:'pdf',original:'Meniti_Impian_Komik.pdf',detail:'Form 2 · Meniti Impian · BM novel comic PDF'},
  {id:'f3-bi-sep-2026-pdf',level:'Form 3',subject:'BI',month:9,title:'2026 九月 · PDF（无封面）',file:'f3-bi-september-2026-no-cover.pdf',type:'pdf',original:'09_F3_VER01_No_Cover.pdf',detail:'Form 3 English · September 2026 · 20-page original booklet without cover'},
