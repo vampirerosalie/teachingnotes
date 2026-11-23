@@ -28,6 +28,8 @@ jobs:
         run: |
           python3 -m pip install --quiet gdown==5.2.0
           python3 scripts/fetch_form3_january_assets.py
+      - name: Add 2027 Year 6 English January–October PDFs from Drive
+        run: python3 scripts/fetch_year6_2027.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
